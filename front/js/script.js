@@ -1,5 +1,5 @@
 import { Catalogue } from "./components/Catalogue.js"
-import { fetchGetJson } from "./function/utils.js"
+import { fetchGetJson } from "./functions/utils.js"
 
 const urlApi = "http://localhost:3000/api/products"
 try{
