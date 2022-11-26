@@ -1,3 +1,5 @@
+import { ErrorResourceDontExist } from "../Error/ErrorResourceDontExist.js"
+
 /**
  * @param {string} url endpoint + path
  */
@@ -8,5 +10,5 @@ export async function fetchGetJson ( url) {
     if (reponse.ok){
         return reponse.json()
     }
-    throw new Error('Une erreur est survenue en contactant le serveur', {cause: reponse})
+    throw new ErrorResourceDontExist("Le serveur répond qu'il ne connait pas la resource", {cause: reponse})
 }
