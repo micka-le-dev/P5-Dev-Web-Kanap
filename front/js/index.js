@@ -1,7 +1,8 @@
 import { Catalogue } from "./components/Catalogue.js"
 import { fetchGetJson } from "./functions/utils.js"
+import { urlApi } from "./var.js"
 
-const urlApi = "http://localhost:3000/api/products"
+
 try{
     const catalogue = await fetchGetJson(urlApi)
     const newCatalogue = new Catalogue(catalogue)
