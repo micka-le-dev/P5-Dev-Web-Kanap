@@ -30,58 +30,44 @@ export class Catalogue{
      */
     appendTo(element){
         this.#catalogue.forEach(produit => {
-            const carteProduit = new CatalogueItem(produit)
-            carteProduit.appendTo(element)
+            element.append(createCardProduct(produit))
         });
     }
 }
 
-class CatalogueItem{
-    /**
-     * @type {HTMLElement}
-     */
-    #carteProduit
+/**
+ * 
+ * @param {Produit} produit
+ * @return {HTMLElement}
+ */
+function createCardProduct(produit){
+    const carteProduit = createElement('a',{ href: `./product.html?id=${produit._id}` })
 
-    /**
-     * @param {Produit} produit 
-     */
-    constructor (produit){
-        const a = createElement('a',{ href: `./product.html?id=${produit._id}` })
+    const article = createElement('article')
+    carteProduit.append(article)
 
-        const article = createElement('article')
-        a.append(article)
+    article.append(
+        createElement('img',{
+            src: produit.imageUrl,
+            alt: produit.altTxt
+        })
+    )
 
-        article.append(
-            createElement('img',{
-                src: produit.imageUrl,
-                alt: produit.altTxt
-            })
+    article.append(
+        createElement('h3',{
+                class: 'productName'
+            },
+            produit.name
         )
+    )
 
-        article.append(
-            createElement('h3',{
-                    class: 'productName'
-                },
-                produit.name
-            )
+    article.append(
+        createElement('p',{
+                class: 'productDescription'
+            },
+            produit.description
         )
+    )
 
-        article.append(
-            createElement('p',{
-                    class: 'productDescription'
-                },
-                produit.description
-            )
-        )
-
-        this.#carteProduit = a
-    }
-
-    /**
-     *
-     * @param {HTMLElement} element
-     */
-    appendTo(element){
-        element.append(this.#carteProduit)
-    }
+    return carteProduit
 }

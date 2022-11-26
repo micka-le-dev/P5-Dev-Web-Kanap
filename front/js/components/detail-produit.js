@@ -18,7 +18,7 @@ import { createElement } from "../functions/dom.js"
  * @param {Produit} produit
  * @return {HTMLElement}
  */
-export function setDetailProduitToElement(elementDetail,produit){
+export function setDetailProduitToElement(produit,elementDetail){
 
     const img = createElement('img',{
                                 src: produit.imageUrl,

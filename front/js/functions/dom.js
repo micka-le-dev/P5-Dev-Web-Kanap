@@ -16,23 +16,14 @@ export function createElement(balise, attributs = {}, innerText = null){
 }
 
 /**
- * 
- * @param {string} selecteurElement sélecteur CSS de l'élément à replacer
- * @param {string} message
- */
-export function replaceElementByMessage(selecteurElement, message){
-    const element = document.querySelector(selecteurElement)
-    const p = document.createElement("p").innerText = message
-    element.replaceWith(p)
-}
-
-/**
  * replace tous les contenu d'un élément par un message
- * @param {string} selecteurElement selecteur CSS
+ * @param {string | HTMLElement} selecteurElement selecteur CSS
  * @param {string} message
  */
 export function setMessageInElement(selecteurElement, message){
-    const element = document.querySelector(selecteurElement)
+    let element = selecteurElement
+    if(selecteurElement instanceof String)
+        element = document.querySelector(selecteurElement)
     const p = document.createElement('p').innerText = message
     while(element.firstChild)
         element.removeChild(element.firstChild)
