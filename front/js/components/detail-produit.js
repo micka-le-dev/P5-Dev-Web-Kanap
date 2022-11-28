@@ -14,8 +14,8 @@ import { createElement } from "../functions/dom.js"
 
 /**
  * 
- * @param {HTMLElement} elementDetail
  * @param {Produit} produit
+ * @param {HTMLElement} elementDetail
  * @return {HTMLElement}
  */
 export function setDetailProduitToElement(produit,elementDetail){
