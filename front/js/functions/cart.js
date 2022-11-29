@@ -26,7 +26,6 @@ export class Cart{
     #keyLocalStorage
 
     /**
-     * 
      * @param {string} keyLocalStorage
      */
     constructor(keyLocalStorage = 'cart'){
@@ -34,12 +33,16 @@ export class Cart{
 
         this.#panier = getArrayLocalStorage(keyLocalStorage, false)
 
+        this.#sort()
+
         console.log(this.#panier)
 
         if( ! this.#panier instanceof Array )
             throw new Error("le panier n'est pas un tableau")
     }
-    
+
+    get items() { return this.#panier }
+
     /**
      * 
      * @param {Event} event
@@ -76,13 +79,14 @@ export class Cart{
             quantity: quantity*1
         }
         this.#updateCart(item)
+        this.#sort()
         this.#updateLocalStorage()
 
         console.log(this.#panier)
     }
 
     /**
-     * cherche si une produit de cetee couleur est dans le panier
+     * cherche si une produit de cette couleur est dans le panier
      * @param {ItemCart} item
      * @return { number} index de l'item
      */
@@ -116,7 +120,6 @@ export class Cart{
     }
 
     /**
-     * 
      * @param {ItemCart} item
      */
     #updateCart(item){
@@ -134,10 +137,17 @@ export class Cart{
             return
         }
 
-        this.#panier[index].quantity += item.quantity
+        this.#panier[index].quantity = item.quantity
     }
 
     #updateLocalStorage(){
         setArrayLocalStorage(this.#keyLocalStorage, this.#panier)
+    }
+
+    /**
+     * tri le panier pour que les produits similaire soit côte-à-côte
+     */
+    #sort(){
+        this.#panier.sort( (a,b) => a.idProduct.localeCompare(b.idProduct))
     }
 }
