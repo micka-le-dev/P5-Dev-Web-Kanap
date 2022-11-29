@@ -29,3 +29,16 @@ export function setMessageInElement(selecteurElement, message){
         element.removeChild(element.firstChild)
     element.append(p)
 }
+
+/**
+ * 
+ * @param {HTMLInputElement} input 
+ */
+export function conrrigeInputNombre(input){
+    let val = input.value * 1
+    let min = input.getAttribute('min') * 1 ?? 1
+    let max = input.getAttribute('max') * 1 ?? 100
+    val = val <= min ? min : val
+    val = val >= max ? max : val
+    input.value = val
+}

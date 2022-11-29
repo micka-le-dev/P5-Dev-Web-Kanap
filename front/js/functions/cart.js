@@ -49,10 +49,15 @@ export class Cart{
      addToCart(event, detailElement, product){
         event.preventDefault()
 
-        const color = detailElement.querySelector('#colors').value // récupérer la valeur de l'input "color-select" ou "colors"
-        const quantity = detailElement.querySelector('#quantity').value // récupérer la valeur de l'input "itemQuantity" ou "quantity"
+        const color = detailElement.querySelector('#colors').value
+        const quantityElement = detailElement.querySelector('#quantity')
+        const quantity = quantityElement.value
 
-        this.add(product,color, quantity)
+        if( ! quantity instanceof Number)
+            throw new Error("quantity n'est pas un nombre")
+        if( quantity < 0)
+        if ( quantity >= 0 && quantity <= 100)
+            this.add(product,color, quantity)
     }
 
     /**
@@ -91,6 +96,15 @@ export class Cart{
             const bonneCouleur = item.color === itemFind.color
             return bonProduit && bonneCouleur
         })
+    }
+
+    /**
+     * cherche si un produit est dans le panier independament de ses options
+     * @param {string} idProduct
+     * @return {ItemCart}
+     */
+    findAProduct(idProduct){
+        return this.#panier.find(item => item.idProduct === idProduct)
     }
 
     /**

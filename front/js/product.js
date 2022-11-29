@@ -22,7 +22,11 @@ else{
         const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
 
         document.querySelector('title').innerText = detailProduit.name
-        setDetailProduitToElement(detailProduit, detailElement)
+        const dejaDansPanier = cart.findAProduct(detailProduit._id)
+        if(dejaDansPanier)
+            setDetailProduitToElement(detailProduit, detailElement, dejaDansPanier.color, dejaDansPanier.quantity)
+        else
+            setDetailProduitToElement(detailProduit, detailElement)
         
         btnAddToCart.addEventListener('click', event => cart.addToCart(event, detailElement, detailProduit))
     }

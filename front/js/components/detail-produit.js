@@ -1,4 +1,4 @@
-import { createElement } from "../functions/dom.js"
+import { conrrigeInputNombre, createElement } from "../functions/dom.js"
 
 /**
  * @typedef {object} Produit
@@ -16,9 +16,11 @@ import { createElement } from "../functions/dom.js"
  * 
  * @param {Produit} produit
  * @param {HTMLElement} elementDetail
+ * @param {string | undefined} preSeletionCouleur
+ * @param {number | undefined} preSelectionQuantite
  * @return {HTMLElement}
  */
-export function setDetailProduitToElement(produit,elementDetail){
+export function setDetailProduitToElement(produit,elementDetail, preSeletionCouleur = undefined, preSelectionQuantite = undefined){
 
     const img = createElement('img',{
                                 src: produit.imageUrl,
@@ -45,8 +47,16 @@ export function setDetailProduitToElement(produit,elementDetail){
         const colorElement = createElement('option',
                                             {value: color },
                                             color)
+        if( color === preSeletionCouleur)
+            colorElement.setAttribute('selected','')
         colorsElement.append(colorElement)
     })
+
+    const quantityElement = document.querySelector('#quantity')
+    quantityElement.addEventListener('change', e => conrrigeInputNombre(e.target) )
+    if(preSelectionQuantite)
+        quantityElement.value = preSelectionQuantite < 0 ? 0 : preSelectionQuantite
+    conrrigeInputNombre(quantityElement)
 
     return elementDetail
 }
