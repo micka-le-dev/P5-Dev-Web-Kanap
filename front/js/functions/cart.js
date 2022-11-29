@@ -51,13 +51,9 @@ export class Cart{
 
         const color = detailElement.querySelector('#colors').value
         const quantityElement = detailElement.querySelector('#quantity')
-        const quantity = quantityElement.value
+        const quantity = quantityElement.value * 1
 
-        if( ! quantity instanceof Number)
-            throw new Error("quantity n'est pas un nombre")
-        if( quantity < 0)
-        if ( quantity >= 0 && quantity <= 100)
-            this.add(product,color, quantity)
+        this.add(product,color, quantity)
     }
 
     /**
@@ -86,12 +82,24 @@ export class Cart{
     }
 
     /**
-     * 
+     * cherche si une produit de cetee couleur est dans le panier
      * @param {ItemCart} item
      * @return { number} index de l'item
      */
-    #find(itemFind){
+     #findIndex(itemFind){
         return this.#panier.findIndex(item => {
+            const bonProduit = item.idProduct === itemFind.idProduct
+            const bonneCouleur = item.color === itemFind.color
+            return bonProduit && bonneCouleur
+        })
+    }
+    /**
+     * cherche si une produit de cetee couleur est dans le panier
+     * @param {ItemCart} item
+     * @return { ItemCart }
+     */
+    find(itemFind){
+        return this.#panier.find(item => {
             const bonProduit = item.idProduct === itemFind.idProduct
             const bonneCouleur = item.color === itemFind.color
             return bonProduit && bonneCouleur
@@ -112,7 +120,7 @@ export class Cart{
      * @param {ItemCart} item
      */
     #updateCart(item){
-        const index = this.#find(item)
+        const index = this.#findIndex(item)
 
         if( index < 0) // item n'est pas dans le pannier
         {

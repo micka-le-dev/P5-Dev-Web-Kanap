@@ -1,4 +1,4 @@
-import { setDetailProduitToElement } from "./components/detail-produit.js"
+import { setDetailProduitToElement, upDateInputQuantity } from "./components/detail-produit.js"
 import { ErrorResourceDontExist } from "./Error/ErrorResourceDontExist.js"
 import { Cart } from "./functions/cart.js"
 import { setMessageInElement } from "./functions/dom.js"
@@ -27,7 +27,10 @@ else{
             setDetailProduitToElement(detailProduit, detailElement, dejaDansPanier.color, dejaDansPanier.quantity)
         else
             setDetailProduitToElement(detailProduit, detailElement)
-        
+
+        document.querySelector("#colors").addEventListener('change',
+                                             e => upDateInputQuantity(detailProduit._id, e.target.value, cart))
+
         btnAddToCart.addEventListener('click', event => cart.addToCart(event, detailElement, detailProduit))
     }
     catch(e){
