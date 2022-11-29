@@ -20,7 +20,10 @@ else{
     try{
         const cart = new Cart()
         const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
+
+        document.querySelector('title').innerText = detailProduit.name
         setDetailProduitToElement(detailProduit, detailElement)
+        
         btnAddToCart.addEventListener('click', event => cart.addToCart(event, detailElement, detailProduit))
     }
     catch(e){

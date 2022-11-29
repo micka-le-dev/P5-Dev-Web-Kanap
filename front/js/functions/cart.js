@@ -1,3 +1,4 @@
+import { getArrayLocalStorage, setArrayLocalStorage } from "./localStorage.js"
 
 /**
  * @typedef {object} Produit
@@ -9,6 +10,7 @@
  * @property {string} altTxt pour l'image
  * @property {string[]} colors
  */
+
 
 /**
  * @typedef {object} ItemCart
@@ -30,9 +32,7 @@ export class Cart{
     constructor(keyLocalStorage = 'cart'){
         this.#keyLocalStorage = keyLocalStorage
 
-        // const panierStrorage = localStorage.getItem(keyLocalStorage)?.toString()
-        // if(panierStrorage)
-        //     this.#panier = JSON.parse(panierStrorage)
+        this.#panier = getArrayLocalStorage(keyLocalStorage, false)
 
         console.log(this.#panier)
 
@@ -47,7 +47,6 @@ export class Cart{
      * @param {Produit} product
      */
      addToCart(event, detailElement, product){
-        console.log("+event")
         event.preventDefault()
 
         const color = detailElement.querySelector('#colors').value // récupérer la valeur de l'input "color-select" ou "colors"
@@ -76,8 +75,9 @@ export class Cart{
             quantity: quantity*1
         }
         this.#updateCart(item)
+        this.#updateLocalStorage()
 
-        console.log("nouveau panier : ", this.#panier)
+        console.log(this.#panier)
     }
 
     /**
@@ -113,5 +113,9 @@ export class Cart{
         }
 
         this.#panier[index].quantity += item.quantity
+    }
+
+    #updateLocalStorage(){
+        setArrayLocalStorage(this.#keyLocalStorage, this.#panier)
     }
 }
