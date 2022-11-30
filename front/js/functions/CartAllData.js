@@ -1,5 +1,5 @@
 import { urlApi } from "../var.js"
-import { Cart } from "./cart.js"
+import { Cart } from "./Cart.js"
 import { fetchGetJson } from "./fetch.js"
 
 /**

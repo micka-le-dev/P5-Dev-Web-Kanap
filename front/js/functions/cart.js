@@ -42,6 +42,7 @@ export class Cart{
     }
 
     get items() { return this.#panier }
+    get isVoid() {  return ! this.#panier || ! this.#panier.length }
 
     /**
      * 

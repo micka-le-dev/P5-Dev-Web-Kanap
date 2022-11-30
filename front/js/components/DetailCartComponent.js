@@ -1,4 +1,4 @@
-import { Cart } from "../functions/cart.js";
+import { Cart } from "../functions/Cart.js";
 import { CartAllData } from "../functions/CartAllData.js";
 import { DetailItemCartComponent } from "./DetailItemCartComponent.js";
 
@@ -22,7 +22,6 @@ export class DetailCartComponent{
     }
 
     /**
-     * 
      * @param {Cart} cart 
      */
     async update(cart){
@@ -38,11 +37,18 @@ export class DetailCartComponent{
         while( itemsCartElement.firstChild )
             itemsCartElement.firstChild.remove()
 
+        this.#cartAndOrderElement.querySelector('#totalQuantity').innerText = this.#cartAllData.totalQuantity
+        this.#cartAndOrderElement.querySelector('#totalPrice').innerText = this.#cartAllData.totalPrice
+
+        console.log(`cart.isVoid = ${cart.isVoid}`)
+        if( cart.isVoid )
+        {
+            this.#cartAndOrderElement.querySelector('.cart__order').remove()
+            return
+        }
         this.#cartAllData.forEach(item => {
             new DetailItemCartComponent(this.#templateItem, item)
             .appendTo(itemsCartElement)
         });
-        this.#cartAndOrderElement.querySelector('#totalQuantity').innerText = this.#cartAllData.totalQuantity
-        this.#cartAndOrderElement.querySelector('#totalPrice').innerText = this.#cartAllData.totalPrice
     }
 }

@@ -1,6 +1,5 @@
-import { setDetailCartToElement } from "./components/detail-cart.js"
 import { DetailCartComponent } from "./components/DetailCartComponent.js"
-import { Cart } from "./functions/cart.js"
+import { Cart } from "./functions/Cart.js"
 
 const cart = new Cart()
 
@@ -17,6 +16,3 @@ cartAndOrderElement.addEventListener('updateCart', event => {
     cart.updateItem(item)
     cartComponent.update(cart)
 })
-
-
-// setDetailCartToElement(cart, cartAndOrderElement)
