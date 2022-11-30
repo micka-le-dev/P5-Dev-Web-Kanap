@@ -69,6 +69,14 @@ export class CartAllData{
     }
 
     /**
+     * 
+     * @param {Cart} cart
+     */
+    setCart(cart){
+        this.#cartResume = cart.items
+    }
+
+    /**
      * @param {ItemCart} itemCart
      * @return {ItemCartAllData} price = price unit * quantity
      */

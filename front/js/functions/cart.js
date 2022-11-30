@@ -78,11 +78,7 @@ export class Cart{
             color: color,
             quantity: quantity*1
         }
-        this.#updateCart(item)
-        this.#sort()
-        this.#updateLocalStorage()
-
-        console.log(this.#panier)
+        this.updateItem(item)
     }
 
     /**
@@ -122,22 +118,47 @@ export class Cart{
     /**
      * @param {ItemCart} item
      */
-    #updateCart(item){
+     updateItem(item){
+        console.log('cart.update item', item)
+        this.#updateItemOfArray(item)
+        this.#sort()
+        this.#updateLocalStorage()
+
+        console.log(this.#panier)
+    }
+
+    /**
+     * @param {ItemCart} item
+     */
+    #updateItemOfArray(item){
+        if( item.quantity*1 >= 1)
+            this.#addItem(item)
+        else if( item.quantity*1 == 0)
+            this.#removeItem(item)
+    }
+
+    /**
+     * @param {ItemCart} item
+     */
+     #addItem(item){
         const index = this.#findIndex(item)
+        console.log('#addItem find index', index)
 
-        if( index < 0) // item n'est pas dans le pannier
-        {
+        if( index >= 0 )
+            this.#panier[index].quantity = item.quantity
+        else
             this.#panier.push(item)
-            return
-        }
+    }
 
-        if( item.quantity == 0) // supprime l'item du pannier
-        {
+    /**
+     * @param {ItemCart} item
+     */
+    #removeItem(item){
+        const index = this.#findIndex(item)
+        console.log('#removeItem find index', index)
+
+        if(index >= 0)
             this.#panier.splice(index,1)
-            return
-        }
-
-        this.#panier[index].quantity = item.quantity
     }
 
     #updateLocalStorage(){
