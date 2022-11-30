@@ -11,6 +11,8 @@
  * @property {number} quantity
  */
 
+import { conrrigeInputNombre } from "../functions/dom.js"
+
 /**
  * @typedef {object} ItemCart
  * @property {string} idProduct
@@ -64,11 +66,11 @@ export class DetailItemCartComponent{
 
         const inputQuantity = this.#itemElement.querySelector('.itemQuantity')
         inputQuantity.value = this.#itemCartAllData.quantity
-        inputQuantity.addEventListener('change', event => changeQuantity(event))
+        inputQuantity.addEventListener('change', event => this.#dispatchEventChangeQuantity(event.target))
 
         this.#itemElement
             .querySelector('.deleteItem')
-            .addEventListener('click', event => this.#dispatchDeteteEvent(event))
+            .addEventListener('click', event => this.#dispatchEventDetete(event))
     }
 
     /**
@@ -79,9 +81,26 @@ export class DetailItemCartComponent{
     }
 
     /**
+ * @param {HTMLInputElement} input 
+     */
+     #dispatchEventChangeQuantity(input){
+        conrrigeInputNombre(input)
+        const eventUpdateItemCart = new CustomEvent('updateCart',{
+            detail: {
+                idProduct: this.#itemCartAllData.idProduct,
+                color: this.#itemCartAllData.color,
+                quantity : input.value
+            },
+            bubbles: true,
+            cancelable: true
+        })
+        this.#itemElement.dispatchEvent(eventUpdateItemCart)
+    }
+
+    /**
      * @param {Event} event
      */
-    #dispatchDeteteEvent(event){
+    #dispatchEventDetete(event){
         const eventUpdateItemCart = new CustomEvent('updateCart',{
             detail: {
                 idProduct: this.#itemCartAllData.idProduct,
@@ -92,8 +111,5 @@ export class DetailItemCartComponent{
             cancelable: true
         })
         this.#itemElement.dispatchEvent(eventUpdateItemCart)
-
-        // if( ! eventUpdateItemCart.preventDefault)
-        //     this.#itemElement.remove() // risque de bug d'affichage si ce n'est pas supprimer du panier
     }
 }

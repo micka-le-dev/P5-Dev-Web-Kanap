@@ -31,7 +31,6 @@ export function setMessageInElement(selecteurElement, message){
 }
 
 /**
- * 
  * @param {HTMLInputElement} input 
  */
 export function conrrigeInputNombre(input){
