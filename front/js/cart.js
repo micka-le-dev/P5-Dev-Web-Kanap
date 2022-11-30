@@ -1,5 +1,5 @@
 import { DetailCartComponent } from "./components/DetailCartComponent.js"
-import { Cart } from "./functions/Cart.js"
+import { Cart } from "./class/Cart.js"
 
 const cart = new Cart()
 

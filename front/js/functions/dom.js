@@ -1,5 +1,4 @@
 /**
- * 
  * @param {string} balise le nom d'une balise HTML
  * @param {object} attributs
  * @param {string} innerText

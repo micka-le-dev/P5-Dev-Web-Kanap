@@ -1,6 +1,6 @@
 import { urlApi } from "../var.js"
 import { Cart } from "./Cart.js"
-import { fetchGetJson } from "./fetch.js"
+import { fetchGetJson } from "../functions/fetch.js"
 
 /**
  * @typedef {object} Produit
@@ -28,8 +28,8 @@ import { fetchGetJson } from "./fetch.js"
 
 
 export class CartAllData{
-    /** @type {Cart}  */
-    #cartResume
+    /** @type {Array}  */
+    #cartResume = []
 
     /** @type {Produit[]}  */
     #catalogue
@@ -43,7 +43,6 @@ export class CartAllData{
     #totalPrice = 0
 
     /**
-     * 
      * @param {Cart} cart
      */
     constructor(cart){
@@ -61,6 +60,7 @@ export class CartAllData{
         this.#cartCompete = []
 
         this.#cartResume.forEach(item => {
+            console.log(item, item.quantity)
             const itemCartAllData = this.#createItemAllData(item)
             this.#cartCompete.push(itemCartAllData)
             this.#nbArticle += itemCartAllData.quantity
@@ -69,7 +69,6 @@ export class CartAllData{
     }
 
     /**
-     * 
      * @param {Cart} cart
      */
     setCart(cart){
@@ -89,7 +88,7 @@ export class CartAllData{
         const itemAllData = {
             idProduct: itemCart.idProduct,
             color: itemCart.color,
-            quantity: itemCart.quantity,
+            quantity: itemCart.quantity*1,
             priceWithQuantity: detailProduit.price * itemCart.quantity,
             name: detailProduit.name,
             description: detailProduit.description,

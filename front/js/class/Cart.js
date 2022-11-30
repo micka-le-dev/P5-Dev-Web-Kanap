@@ -1,4 +1,4 @@
-import { getArrayLocalStorage, setArrayLocalStorage } from "./localStorage.js"
+import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
 
 /**
  * @typedef {object} Produit
@@ -45,7 +45,6 @@ export class Cart{
     get isVoid() {  return ! this.#panier || ! this.#panier.length }
 
     /**
-     * 
      * @param {Event} event
      * @param {HTMLElement} detailElement
      * @param {Produit} product
@@ -61,7 +60,6 @@ export class Cart{
     }
 
     /**
-     * 
      * @param {Produit} product
      * @param {string} color
      * @param {number} quantity
@@ -120,7 +118,6 @@ export class Cart{
      * @param {ItemCart} item
      */
      updateItem(item){
-        console.log('cart.update item', item)
         this.#updateItemOfArray(item)
         this.#sort()
         this.#updateLocalStorage()
@@ -143,7 +140,6 @@ export class Cart{
      */
      #addItem(item){
         const index = this.#findIndex(item)
-        console.log('#addItem find index', index)
 
         if( index >= 0 )
             this.#panier[index].quantity = item.quantity
@@ -156,7 +152,6 @@ export class Cart{
      */
     #removeItem(item){
         const index = this.#findIndex(item)
-        console.log('#removeItem find index', index)
 
         if(index >= 0)
             this.#panier.splice(index,1)

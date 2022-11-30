@@ -17,7 +17,6 @@ export class Catalogue{
     #catalogue = []
 
     /**
-     * 
      * @param {Produit[]} catalogue 
      */
     constructor(catalogue){
@@ -25,7 +24,6 @@ export class Catalogue{
     }
 
     /**
-     * 
      * @param {HTMLElement} element 
      */
     appendTo(element){
@@ -36,7 +34,6 @@ export class Catalogue{
 }
 
 /**
- * 
  * @param {Produit} produit
  * @return {HTMLElement}
  */

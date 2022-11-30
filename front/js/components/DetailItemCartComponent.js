@@ -1,3 +1,4 @@
+import { conrrigeInputNombre } from "../functions/dom.js"
 
 /**
  * @typedef {object} ItemCartAllData
@@ -11,7 +12,6 @@
  * @property {number} quantity
  */
 
-import { conrrigeInputNombre } from "../functions/dom.js"
 
 /**
  * @typedef {object} ItemCart
@@ -81,7 +81,7 @@ export class DetailItemCartComponent{
     }
 
     /**
- * @param {HTMLInputElement} input 
+     * @param {HTMLInputElement} input 
      */
      #dispatchEventChangeQuantity(input){
         conrrigeInputNombre(input)
@@ -89,7 +89,7 @@ export class DetailItemCartComponent{
             detail: {
                 idProduct: this.#itemCartAllData.idProduct,
                 color: this.#itemCartAllData.color,
-                quantity : input.value
+                quantity : input.value*1
             },
             bubbles: true,
             cancelable: true

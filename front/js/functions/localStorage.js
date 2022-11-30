@@ -1,6 +1,5 @@
 
 /**
- * 
  * @param {string} keyLocalStorage
  * @param {Array} array
  */
@@ -10,7 +9,6 @@ export function setArrayLocalStorage(keyLocalStorage, array){
 }
 
 /**
- * 
  * @param {string} keyLocalStorage
  * @param {boolean} exception si une erreur survient, true => throw new Error, false => return []
  * @returns {Array}

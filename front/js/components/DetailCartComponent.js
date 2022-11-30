@@ -1,5 +1,5 @@
-import { Cart } from "../functions/Cart.js";
-import { CartAllData } from "../functions/CartAllData.js";
+import { Cart } from "../class/Cart.js";
+import { CartAllData } from "../class/CartAllData.js";
 import { DetailItemCartComponent } from "./DetailItemCartComponent.js";
 
 export class DetailCartComponent{
@@ -37,10 +37,10 @@ export class DetailCartComponent{
         while( itemsCartElement.firstChild )
             itemsCartElement.firstChild.remove()
 
+        console.log(this.#cartAllData.totalQuantity)
         this.#cartAndOrderElement.querySelector('#totalQuantity').innerText = this.#cartAllData.totalQuantity
         this.#cartAndOrderElement.querySelector('#totalPrice').innerText = this.#cartAllData.totalPrice
 
-        console.log(`cart.isVoid = ${cart.isVoid}`)
         if( cart.isVoid )
         {
             this.#cartAndOrderElement.querySelector('.cart__order').remove()

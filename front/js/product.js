@@ -1,6 +1,6 @@
 import { setDetailProduitToElement, upDateInputQuantity } from "./components/detail-produit.js"
 import { ErrorResourceDontExist } from "./Error/ErrorResourceDontExist.js"
-import { Cart } from "./functions/cart.js"
+import { Cart } from "./class/Cart.js"
 import { setMessageInElement } from "./functions/dom.js"
 import { fetchGetJson } from "./functions/fetch.js"
 import { urlApi } from "./var.js"
