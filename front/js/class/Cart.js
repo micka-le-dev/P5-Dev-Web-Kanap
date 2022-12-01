@@ -35,7 +35,7 @@ export class Cart{
 
         this.#sort()
 
-        console.log(this.#panier)
+        this.console()
 
         if( ! this.#panier instanceof Array )
             throw new Error("le panier n'est pas un tableau")
@@ -122,7 +122,7 @@ export class Cart{
         this.#sort()
         this.#updateLocalStorage()
 
-        console.log(this.#panier)
+        this.console()
     }
 
     /**
@@ -166,5 +166,12 @@ export class Cart{
      */
     #sort(){
         this.#panier.sort( (a,b) => a.idProduct.localeCompare(b.idProduct))
+    }
+
+    /**
+     * affiche le contenu du panier dans la console
+     */
+    console(){
+        console.log("cart ", this.#panier)
     }
 }

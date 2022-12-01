@@ -12,7 +12,6 @@ cartComponent.update(cart)
 
 cartAndOrderElement.addEventListener('updateCart', event => {
     const item = event.detail
-    console.log(item)
     cart.updateItem(item)
     cartComponent.update(cart)
 })

@@ -16,14 +16,13 @@ export function createElement(balise, attributs = {}, innerText = null){
 
 /**
  * replace tous les contenu d'un élément par un message
- * @param {string | HTMLElement} selecteurElement selecteur CSS
+ * @param {HTMLElement} element
  * @param {string} message
  */
-export function setMessageInElement(selecteurElement, message){
-    let element = selecteurElement
-    if(selecteurElement instanceof String)
-        element = document.querySelector(selecteurElement)
-    const p = document.createElement('p').innerText = message
+export function setMessageInElement(element, message){
+    const p = document.createElement('p')
+    p.innerText = message
+    p.style.textAlign = "center"
     while(element.firstChild)
         element.removeChild(element.firstChild)
     element.append(p)

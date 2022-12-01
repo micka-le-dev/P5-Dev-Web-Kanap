@@ -10,5 +10,5 @@ try{
     newCatalogue.appendTo(document.getElementById('items'))
 }
 catch(e){
-    setMessageInElement('#items','Impossible de charger nos produit.')
+    setMessageInElement(document.querySelector('#items'),'Impossible de charger nos produit.')
 }

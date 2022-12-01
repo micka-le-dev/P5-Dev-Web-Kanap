@@ -42,6 +42,9 @@ export class CartAllData{
     /** @type {number} */
     #totalPrice = 0
 
+    /** @type {boolean} */
+    #isCompleted = false
+
     /**
      * @param {Cart} cart
      */
@@ -51,21 +54,47 @@ export class CartAllData{
 
     get totalQuantity() { return this.#nbArticle }
     get totalPrice() { return this.#totalPrice }
+    get isOk() { return this.#isCompleted }
+    get isNotOk() { return ! this.#isCompleted }
 
-    async getDetail(){
-        if( ! this.#catalogue )
-            this.#catalogue = await fetchGetJson(urlApi)
+    /**
+     * contacte le serveur pour obtenir les prix des articles dans le panier
+     * @param {boolean} throwErrorLoadDetails lancer une Exception en cas de problème pour charger le details du panier
+     */
+    async getDetail(throwErrorLoadDetails = true){
+        this.#isCompleted = false
 
         this.#nbArticle = this.#totalPrice = 0
         this.#cartCompete = []
 
-        this.#cartResume.forEach(item => {
-            console.log(item, item.quantity)
-            const itemCartAllData = this.#createItemAllData(item)
-            this.#cartCompete.push(itemCartAllData)
-            this.#nbArticle += itemCartAllData.quantity
-            this.#totalPrice += itemCartAllData.priceWithQuantity
-        });
+        if( ! this.#cartResume )
+            throw new Error("aucun panier n'est spécifié, utiliser la méthode setCart(cart)")
+
+        if( this.#cartResume.length == 0) // si le panier est vide ou inexistant
+        {
+            this.#isCompleted = true
+            return
+        }
+
+        try{
+            if( ! this.#catalogue )
+                this.#catalogue = await fetchGetJson(urlApi)
+
+            this.#cartResume.forEach(item => {
+                const itemCartAllData = this.#createItemAllData(item)
+                this.#cartCompete.push(itemCartAllData)
+                this.#nbArticle += itemCartAllData.quantity
+                this.#totalPrice += itemCartAllData.priceWithQuantity
+            });
+
+            this.#isCompleted = true
+        }
+        catch(err){
+            this.#isCompleted = false
+        }
+
+        if( ! this.#isCompleted && throwErrorLoadDetails )
+            throw new Error("Impossoble de charger le détail du panier")
     }
 
     /**
