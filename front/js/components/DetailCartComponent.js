@@ -1,4 +1,4 @@
-import { Cart } from "../class/Cart.js";
+import { CartLocalStorage } from "../class/CartLocalStorage.js";
 import { CartAllData } from "../class/CartAllData.js";
 import { setMessageInElement } from "../functions/dom.js";
 import { DetailItemCartComponent } from "./DetailItemCartComponent.js";
@@ -23,13 +23,13 @@ export class DetailCartComponent{
     }
 
     /**
-     * @param {Cart} cart 
+     * @param {CartLocalStorage} cartLocalStorage 
      */
-    async update(cart){
+    async update(cartLocalStorage){
         if( ! this.#cartAllData )
-            this.#cartAllData = new CartAllData(cart)
+            this.#cartAllData = new CartAllData(cartLocalStorage)
         else
-            this.#cartAllData.setCart(cart)
+            this.#cartAllData.setCart(cartLocalStorage)
 
         try{
             await this.#cartAllData.getDetail(true)
@@ -42,7 +42,7 @@ export class DetailCartComponent{
             this.#cartAndOrderElement.querySelector('#totalQuantity').innerText = this.#cartAllData.totalQuantity
             this.#cartAndOrderElement.querySelector('#totalPrice').innerText = this.#cartAllData.totalPrice
     
-            if( cart.isVoid )
+            if( cartLocalStorage.isVoid )
             {
                 this.#cartAndOrderElement.querySelector('.cart__order').remove()
                 return

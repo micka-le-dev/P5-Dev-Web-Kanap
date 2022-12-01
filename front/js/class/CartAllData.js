@@ -1,5 +1,5 @@
 import { urlApi } from "../var.js"
-import { Cart } from "./Cart.js"
+import { CartLocalStorage } from "./CartLocalStorage.js"
 import { fetchGetJson } from "../functions/fetch.js"
 
 /**
@@ -46,10 +46,10 @@ export class CartAllData{
     #isCompleted = false
 
     /**
-     * @param {Cart} cart
+     * @param {CartLocalStorage} cartLocalStorage
      */
-    constructor(cart){
-        this.#cartResume = cart.items
+    constructor(cartLocalStorage){
+        this.#cartResume = cartLocalStorage.items
     }
 
     get totalQuantity() { return this.#nbArticle }
@@ -68,7 +68,7 @@ export class CartAllData{
         this.#cartCompete = []
 
         if( ! this.#cartResume )
-            throw new Error("aucun panier n'est spécifié, utiliser la méthode setCart(cart)")
+            throw new Error("aucun panier n'est spécifié, utiliser la méthode setCart(cartLocalStorage)")
 
         if( this.#cartResume.length == 0) // si le panier est vide ou inexistant
         {
@@ -98,10 +98,10 @@ export class CartAllData{
     }
 
     /**
-     * @param {Cart} cart
+     * @param {CartLocalStorage} cartLocalStorage
      */
-    setCart(cart){
-        this.#cartResume = cart.items
+    setCart(cartLocalStorage){
+        this.#cartResume = cartLocalStorage.items
     }
 
     /**

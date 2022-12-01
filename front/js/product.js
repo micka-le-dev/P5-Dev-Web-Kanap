@@ -1,6 +1,6 @@
 import { setDetailProduitToElement, upDateInputQuantity } from "./components/detail-produit.js"
 import { ErrorResourceDontExist } from "./Error/ErrorResourceDontExist.js"
-import { Cart } from "./class/Cart.js"
+import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { setMessageInElement } from "./functions/dom.js"
 import { fetchGetJson } from "./functions/fetch.js"
 import { urlApi } from "./var.js"
@@ -18,20 +18,20 @@ if( !id )
 
 else{
     try{
-        const cart = new Cart()
+        const cartLocalStorage = new CartLocalStorage()
         const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
 
         document.querySelector('title').innerText = detailProduit.name
-        const dejaDansPanier = cart.findAProduct(detailProduit._id)
+        const dejaDansPanier = cartLocalStorage.findAProduct(detailProduit._id)
         if(dejaDansPanier)
             setDetailProduitToElement(detailProduit, detailElement, dejaDansPanier.color, dejaDansPanier.quantity)
         else
             setDetailProduitToElement(detailProduit, detailElement)
 
         document.querySelector("#colors").addEventListener('change',
-                                             e => upDateInputQuantity(detailProduit._id, e.target.value, cart))
+                                             e => upDateInputQuantity(detailProduit._id, e.target.value, cartLocalStorage))
 
-        btnAddToCart.addEventListener('click', event => cart.addToCart(event, detailElement, detailProduit))
+        btnAddToCart.addEventListener('click', event => cartLocalStorage.addToCart(event, detailElement, detailProduit))
     }
     catch(e){
         if( e instanceof ErrorResourceDontExist)

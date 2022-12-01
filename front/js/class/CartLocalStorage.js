@@ -19,7 +19,7 @@ import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localSt
  * @property {number} quantity
  */
 
-export class Cart{
+export class CartLocalStorage{
     /** @type {ItemCart[]} */
     #panier = []
     /** @type {string} */

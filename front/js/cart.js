@@ -1,17 +1,17 @@
 import { DetailCartComponent } from "./components/DetailCartComponent.js"
-import { Cart } from "./class/Cart.js"
+import { CartLocalStorage } from "./class/CartLocalStorage.js"
 
-const cart = new Cart()
+const cartLocalStorage = new CartLocalStorage()
 
 const templateItemCart = document.querySelector('template#itemCart')
 const cartAndOrderElement = document.querySelector('.cart')
 
 const cartComponent = new DetailCartComponent(cartAndOrderElement, templateItemCart)
-cartComponent.update(cart)
+cartComponent.update(cartLocalStorage)
 
 
 cartAndOrderElement.addEventListener('updateCart', event => {
     const item = event.detail
-    cart.updateItem(item)
-    cartComponent.update(cart)
+    cartLocalStorage.updateItem(item)
+    cartComponent.update(cartLocalStorage)
 })

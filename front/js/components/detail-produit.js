@@ -1,4 +1,4 @@
-import { Cart } from "../class/Cart.js"
+import { CartLocalStorage } from "../class/CartLocalStorage.js"
 import { conrrigeInputNombre, createElement } from "../functions/dom.js"
 
 /**
@@ -66,10 +66,10 @@ export function setDetailProduitToElement(produit,elementDetail, preSeletionCoul
 /**
  * @param {string} idProduct
  * @param {string} color
- * @param {Cart} cart
+ * @param {CartLocalStorage} cartLocalStorage
  */
-export function upDateInputQuantity(idProduct, color, cart){
-    const item = cart.find({idProduct, color, quantity: 1})
+export function upDateInputQuantity(idProduct, color, cartLocalStorage){
+    const item = cartLocalStorage.find({idProduct, color, quantity: 1})
     const quantity = item?.quantity ?? 1
     document.querySelector('#quantity').value = quantity
 }
