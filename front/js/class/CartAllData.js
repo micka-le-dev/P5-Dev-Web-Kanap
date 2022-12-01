@@ -70,7 +70,7 @@ export class CartAllData{
         if( ! this.#cartResume )
             throw new Error("aucun panier n'est spécifié, utiliser la méthode setCart(cartLocalStorage)")
 
-        if( this.#cartResume.length == 0) // si le panier est vide ou inexistant
+        if( this.#cartResume.length == 0)
         {
             this.#isCompleted = true
             return

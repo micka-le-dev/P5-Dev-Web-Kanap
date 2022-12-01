@@ -142,7 +142,7 @@ export class CartLocalStorage{
         const index = this.#findIndex(item)
 
         if( index >= 0 )
-            this.#panier[index].quantity = item.quantity
+            this.#panier[index].quantity = item.quantity*1
         else
             this.#panier.push(item)
     }
@@ -172,6 +172,6 @@ export class CartLocalStorage{
      * affiche le contenu du panier dans la console
      */
     console(){
-        console.log("cart ", this.#panier)
+        console.log("cartLocalStorage ", this.#panier)
     }
 }
