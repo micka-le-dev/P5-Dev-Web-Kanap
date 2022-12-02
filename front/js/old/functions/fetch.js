@@ -1,4 +1,4 @@
-import { ErrorResourceDontExist } from "../Error/ErrorResourceDontExist.js"
+import { ErrorResourceDontExist } from "../../Error/ErrorResourceDontExist.js"
 
 /**
  * @param {string} url endpoint + path
