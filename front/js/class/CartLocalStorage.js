@@ -1,5 +1,6 @@
 import { updateLinkCart } from "../components/taille-cart.js"
 import { ErrorColorProduct } from "../Error/ErrorcolorProduct.js"
+import { appendMessageToElement } from "../functions/dom.js"
 import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
 
 /**
@@ -22,13 +23,18 @@ import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localSt
  */
 
 export class CartLocalStorage{
+
     /** @type {ItemCart[]} */
     #panier = []
+
     /** @type {string} */
     #keyLocalStorage
 
     /** @type {number} */
     #nbArticle = 0
+
+    /** @type {string} */
+    #messageModifPanier
 
     /**
      * @param {string} keyLocalStorage
@@ -63,6 +69,11 @@ export class CartLocalStorage{
 
         try{
             this.add(product,color, quantity)
+
+            appendMessageToElement(
+                this.#messageModifPanier,
+                detailElement.querySelector('.item__content')
+            )
         }
         catch(err){
             if( err instanceof ErrorColorProduct)
@@ -162,6 +173,8 @@ export class CartLocalStorage{
             this.#panier[index].quantity = item.quantity
         else
             this.#panier.push(item)
+
+        this.#messageModifPanier = 'Ajouté au panier'
     }
 
     /**
@@ -174,7 +187,10 @@ export class CartLocalStorage{
         {
             this.#panier.splice(index,1)
             this.#nbArticle -= item.quantity
+
+            this.#messageModifPanier = 'Supprimé du panier'
         }
+        this.#messageModifPanier = "Ce produit n'est pas dans le panier"
     }
 
     #updateLocalStorage(){

@@ -21,6 +21,8 @@ import { conrrigeInputNombre, createElement } from "../functions/dom.js"
  * @return {HTMLElement}
  */
 export function setDetailProduitToElement(produit,elementDetail, preSeletionCouleur = undefined, preSelectionQuantite = undefined){
+    if(preSelectionQuantite)
+        preSelectionQuantite *= 1
 
     const img = createElement('img',{
                                 src: produit.imageUrl,
@@ -74,5 +76,7 @@ export function setDetailProduitToElement(produit,elementDetail, preSeletionCoul
 export function upDateInputQuantity(idProduct, color, cartLocalStorage){
     const item = cartLocalStorage.find({idProduct, color, quantity: 1})
     const quantity = item?.quantity ?? 1
-    document.querySelector('#quantity').value = quantity
+    const quantityElement = document.querySelector('#quantity')
+    quantityElement.value = quantity
+    quantityElement.setAttribute('data-old-value', quantity)
 }

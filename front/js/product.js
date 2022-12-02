@@ -1,7 +1,7 @@
 import { setDetailProduitToElement, upDateInputQuantity } from "./components/detail-produit.js"
 import { ErrorResourceDontExist } from "./Error/ErrorResourceDontExist.js"
 import { CartLocalStorage } from "./class/CartLocalStorage.js"
-import { setMessageInElement } from "./functions/dom.js"
+import { replaceContentElementByMessage } from "./functions/dom.js"
 import { fetchGetJson } from "./functions/fetch.js"
 import { urlApi } from "./var.js"
 import { updateLinkCart } from "./components/taille-cart.js"
@@ -50,4 +50,4 @@ else{
 }
 
 if(messageDErreur)
-    setMessageInElement(detailElement,messageDErreur)
+    replaceContentElementByMessage(detailElement,messageDErreur)

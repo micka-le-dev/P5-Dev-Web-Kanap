@@ -1,6 +1,6 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
 import { CartAllData } from "../class/CartAllData.js";
-import { setMessageInElement } from "../functions/dom.js";
+import { replaceContentElementByMessage } from "../functions/dom.js";
 import { DetailItemCartComponent } from "./DetailItemCartComponent.js";
 
 export class DetailCartComponent{
@@ -55,7 +55,7 @@ export class DetailCartComponent{
         }
         catch(err){
             console.error(err)
-            setMessageInElement(this.#cartAndOrderElement,"Délolé, impossible de charger les details du panier.")
+            replaceContentElementByMessage(this.#cartAndOrderElement,"Délolé, impossible de charger les details du panier.")
         }
     }
 }

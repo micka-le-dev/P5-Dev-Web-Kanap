@@ -66,7 +66,11 @@ export class DetailItemCartComponent{
 
         const inputQuantity = this.#itemElement.querySelector('.itemQuantity')
         inputQuantity.value = this.#itemCartAllData.quantity
-        inputQuantity.addEventListener('change', event => this.#dispatchEventChangeQuantity(event.target))
+        inputQuantity.setAttribute('data-old-value', inputQuantity.value)
+        inputQuantity.addEventListener('change', event => {
+                    conrrigeInputNombre(event.target, false)
+                    this.#dispatchEventChangeQuantity(event.target)
+                })
 
         this.#itemElement
             .querySelector('.deleteItem')

@@ -19,20 +19,37 @@ export function createElement(balise, attributs = {}, innerText = null){
  * @param {HTMLElement} element
  * @param {string} message
  */
-export function setMessageInElement(element, message){
+export function replaceContentElementByMessage(element, message){
+    while(element.firstChild)
+        element.removeChild(element.firstChild)
+    appendMessageToElement(message,element)
+}
+
+export function appendMessageToElement(message, element, options = {}){
     const p = document.createElement('p')
     p.innerText = message
     p.style.textAlign = "center"
-    while(element.firstChild)
-        element.removeChild(element.firstChild)
     element.append(p)
 }
 
 /**
- * @param {HTMLInputElement} input 
+ * @param {HTMLInputElement} input
+ * @param {boolean} deletable
  */
-export function conrrigeInputNombre(input, deletable = false){
+export function conrrigeInputNombre(input , deletable = false){
+    const oldValue = input.getAttribute('data-old-value') ?? 1
+    
     let val = input.value * 1
+
+    if(
+        input.value == ''
+        || val < 0
+        || !deletable && val == 0
+    )
+    {
+        input.value = oldValue
+        return
+    }
 
     if( deletable )
     {
@@ -50,6 +67,7 @@ export function conrrigeInputNombre(input, deletable = false){
     val = val >= max ? max : val
 
     input.value = val
+    input.setAttribute('data-old-value', val)
 }
 
 /**
