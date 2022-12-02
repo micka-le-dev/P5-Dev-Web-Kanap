@@ -28,16 +28,20 @@ else{
         else
             setDetailProduitToElement(detailProduit, detailElement)
 
-        document.querySelector("#colors").addEventListener('change',
-                                             e => upDateInputQuantity(detailProduit._id, e.target.value, cartLocalStorage))
+        document.querySelector("#colors").addEventListener('change', e => upDateInputQuantity(detailProduit._id, e.target.value, cartLocalStorage))
+        
+        document.querySelector('#quantity').addEventListener('btnAddToDelete', event => { btnAddToCart.innerText = "Supprimer du panier"   })
+        document.querySelector('#quantity').addEventListener('btnDeleteToAdd', event => { btnAddToCart.innerText = "Ajouter au panier"     })
 
         btnAddToCart.addEventListener('click', event => cartLocalStorage.addToCart(event, detailElement, detailProduit))
     }
     catch(e){
         if( e instanceof ErrorResourceDontExist)
             messageDErreur = "Ce produit n'existe pas."
-        else
+        else{
             messageDErreur = "Erreur réseau."
+            console.error(e)
+        }
     }
 }
 

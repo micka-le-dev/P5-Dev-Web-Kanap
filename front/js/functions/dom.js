@@ -31,11 +31,39 @@ export function setMessageInElement(element, message){
 /**
  * @param {HTMLInputElement} input 
  */
-export function conrrigeInputNombre(input){
+export function conrrigeInputNombre(input, deletable = false){
     let val = input.value * 1
+
+    if( deletable )
+    {
+        if( val == 0 )
+        {
+            dispatchEventBtnDeteteItem(input)
+            return
+        }
+        dispatchEventBtnAddItem(input)
+    }
+
     let min = input.getAttribute('min') * 1 ?? 1
     let max = input.getAttribute('max') * 1 ?? 100
     val = val <= min ? min : val
     val = val >= max ? max : val
+
     input.value = val
+}
+
+/**
+ * @param {HTMLElement} element
+ */
+function dispatchEventBtnDeteteItem(element){
+    const eventDeleteItem = new CustomEvent('btnAddToDelete',{})
+    element.dispatchEvent(eventDeleteItem)
+}
+
+/**
+ * @param {HTMLElement} element
+ */
+ function dispatchEventBtnAddItem(element){
+    const eventDeleteItem = new CustomEvent('btnDeleteToAdd',{})
+    element.dispatchEvent(eventDeleteItem)
 }

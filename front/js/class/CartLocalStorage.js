@@ -1,3 +1,4 @@
+import { ErrorColorProduct } from "../Error/ErrorcolorProduct.js"
 import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
 
 /**
@@ -56,7 +57,13 @@ export class CartLocalStorage{
         const quantityElement = detailElement.querySelector('#quantity')
         const quantity = quantityElement.value * 1
 
-        this.add(product,color, quantity)
+        try{
+            this.add(product,color, quantity)
+        }
+        catch(err){
+            if( err instanceof ErrorColorProduct)
+                alert("Vous devez seléctionner une couleur pour ajouter ce produit au panier.")
+        }
     }
 
     /**
@@ -65,12 +72,13 @@ export class CartLocalStorage{
      * @param {number} quantity
      */
     add(product, color, quantity){
+        quantity *= 1
         if( quantity < 0 )
             throw new Error(`${quantity} n'est pas une quantité valide`)
 
         // vérifi si cette couleur est possible pour ce produit
         if( ! product.colors.find(couleur => couleur === color) )
-            throw new Error(`${color} n'est pas une couleur valide`)
+            throw new ErrorColorProduct(`${color} n'est pas une couleur valide`)
 
         const item = {
             idProduct: product._id,
@@ -123,6 +131,8 @@ export class CartLocalStorage{
         this.#updateLocalStorage()
 
         this.console()
+
+        //déclanche affichage modif panier
     }
 
     /**

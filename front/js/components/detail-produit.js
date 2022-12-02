@@ -49,13 +49,16 @@ export function setDetailProduitToElement(produit,elementDetail, preSeletionCoul
                                             color)
         if( color === preSeletionCouleur)
             colorElement.setAttribute('selected','')
+        // else
+        //     elementDetail.querySelector('#addToCart').disabled = true
+
         colorsElement.append(colorElement)
     })
 
     const quantityElement = document.querySelector('#quantity')
 
 
-    quantityElement.addEventListener('change', e => conrrigeInputNombre(e.target) )
+    quantityElement.addEventListener('change', e => conrrigeInputNombre(e.target, true) )
     if(preSelectionQuantite)
         quantityElement.value = preSelectionQuantite < 0 ? 0 : preSelectionQuantite
     conrrigeInputNombre(quantityElement)
