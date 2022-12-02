@@ -40,6 +40,7 @@ export class DetailCartComponent{
                 itemsCartElement.firstChild.remove()
     
             this.#cartAndOrderElement.querySelector('#totalQuantity').innerText = this.#cartAllData.totalQuantity
+            this.#cartAndOrderElement.querySelector('#js-motArticle').innerText = this.#cartAllData.totalQuantity >= 2 ? 'articles' : 'article'
             this.#cartAndOrderElement.querySelector('#totalPrice').innerText = this.#cartAllData.totalPrice
     
             if( cartLocalStorage.isVoid )

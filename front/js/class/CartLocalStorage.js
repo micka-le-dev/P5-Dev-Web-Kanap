@@ -1,3 +1,4 @@
+import { updateLinkCart } from "../components/taille-cart.js"
 import { ErrorColorProduct } from "../Error/ErrorcolorProduct.js"
 import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
 
@@ -26,6 +27,9 @@ export class CartLocalStorage{
     /** @type {string} */
     #keyLocalStorage
 
+    /** @type {number} */
+    #nbArticle = 0
+
     /**
      * @param {string} keyLocalStorage
      */
@@ -33,7 +37,7 @@ export class CartLocalStorage{
         this.#keyLocalStorage = keyLocalStorage
 
         this.#panier = getArrayLocalStorage(keyLocalStorage, false)
-
+        this.#compteNbArticle()
         this.#sort()
 
         this.console()
@@ -126,23 +130,26 @@ export class CartLocalStorage{
      * @param {ItemCart} item
      */
      updateItem(item){
+        item.quantity *= 1
         this.#updateItemOfArray(item)
         this.#sort()
         this.#updateLocalStorage()
 
         this.console()
 
-        //déclanche affichage modif panier
+        updateLinkCart(this)
     }
 
     /**
      * @param {ItemCart} item
      */
     #updateItemOfArray(item){
-        if( item.quantity*1 >= 1)
+        if( item.quantity >= 1)
             this.#addItem(item)
-        else if( item.quantity*1 == 0)
+        else if( item.quantity == 0)
             this.#removeItem(item)
+
+        this.#compteNbArticle()
     }
 
     /**
@@ -152,7 +159,7 @@ export class CartLocalStorage{
         const index = this.#findIndex(item)
 
         if( index >= 0 )
-            this.#panier[index].quantity = item.quantity*1
+            this.#panier[index].quantity = item.quantity
         else
             this.#panier.push(item)
     }
@@ -164,7 +171,10 @@ export class CartLocalStorage{
         const index = this.#findIndex(item)
 
         if(index >= 0)
+        {
             this.#panier.splice(index,1)
+            this.#nbArticle -= item.quantity
+        }
     }
 
     #updateLocalStorage(){
@@ -183,5 +193,20 @@ export class CartLocalStorage{
      */
     console(){
         console.log("cartLocalStorage ", this.#panier)
+    }
+
+    /**
+     * @returns {string} exemples de retour : "( 1 article )", "( 2 artcles )", "vide"
+     */
+    nbItemTostring(){
+        const sAuMotArticle = this.#nbArticle >= 2 ? 's' : ''
+        return this.#nbArticle >= 1 ?
+                `( ${this.#nbArticle} article${sAuMotArticle} )`
+                : 'vide'
+    }
+
+    #compteNbArticle(){
+        this.#nbArticle = 0
+        this.#panier.forEach(item => this.#nbArticle += item.quantity )
     }
 }

@@ -4,6 +4,7 @@ import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { setMessageInElement } from "./functions/dom.js"
 import { fetchGetJson } from "./functions/fetch.js"
 import { urlApi } from "./var.js"
+import { updateLinkCart } from "./components/taille-cart.js"
 
 const url = new URL(window.location.href)
 const id = url.searchParams.get("id")
@@ -22,6 +23,9 @@ else{
         const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
 
         document.querySelector('title').innerText = detailProduit.name
+        updateLinkCart(cartLocalStorage)
+
+
         const dejaDansPanier = cartLocalStorage.findAProduct(detailProduit._id)
         if(dejaDansPanier)
             setDetailProduitToElement(detailProduit, detailElement, dejaDansPanier.color, dejaDansPanier.quantity)
@@ -29,7 +33,7 @@ else{
             setDetailProduitToElement(detailProduit, detailElement)
 
         document.querySelector("#colors").addEventListener('change', e => upDateInputQuantity(detailProduit._id, e.target.value, cartLocalStorage))
-        
+
         document.querySelector('#quantity').addEventListener('btnAddToDelete', event => { btnAddToCart.innerText = "Supprimer du panier"   })
         document.querySelector('#quantity').addEventListener('btnDeleteToAdd', event => { btnAddToCart.innerText = "Ajouter au panier"     })
 
