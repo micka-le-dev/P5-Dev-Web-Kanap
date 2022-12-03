@@ -1,5 +1,5 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
-import { replaceContentElementByMessage } from "../function/dom.js";
+import { replaceContentElementByMessage } from "../functions/dom.js";
 
 /**
  * @typedef {object} Produit
@@ -49,7 +49,12 @@ export class DetailProductComponent{
      * @param {string} color
      * @param {number} quantity
      */
-    #actionBtn = (idProduct, color, quantity) => {}
+    #actionBtn = (idProduct, color, quantity) => console.log(
+`classe DetailProductComponent : l'action du bouton #addToCart n'est pas défini, utiliser le setter actionClickBtn pour la definir
+cette function prend 3 paramettres :
+    idProduct : string,
+    color : string,
+    quantity : number`)
 
 
 
@@ -57,12 +62,10 @@ export class DetailProductComponent{
     /**
      * @param {CartLocalStorage} cartLocalStorage
      * @param {string} selecteurCSS
-     * @param {Function} actionBtn prenant 3 paramettres un idProduct, color, quantity; par defaut, affiche un message dans la console
      */
-    constructor(cartLocalStorage, selecteurCSS, actionBtn = (idProduct, color, quantity) => console.log('click on btn :', idProduct,color,quantity)){
+    constructor(cartLocalStorage, selecteurCSS){
         this.#cartLocalStorage = cartLocalStorage
         this.#contenerDetailElement = document.querySelector(selecteurCSS)
-        this.#actionBtn = actionBtn
     }
 
     get id() { return this.#produit.idProduct }
@@ -72,7 +75,10 @@ export class DetailProductComponent{
     /**
      * @param {Function} actionBtn param1 {string} idProduct,  param2 {string} color,  param3 {number} quantity
      */
-    set actionClickBtn(actionBtn) { this.#actionBtn = actionBtn }
+    set actionClickBtn(actionBtn) {
+        this.#actionBtn = actionBtn
+        this.#btnActionOnCart.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
+    }
 
     /**
      * @param {string} message
@@ -133,7 +139,6 @@ export class DetailProductComponent{
         quantityElement.addEventListener('change', event => { this.#quantityChange() })
 
         this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
-        this.#btnActionOnCart.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
 
         return this.#contenerDetailElement
     }

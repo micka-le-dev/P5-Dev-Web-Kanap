@@ -1,4 +1,5 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js"
+import { ErrorSelectorCSS } from "../Error/ErrorSelectorCSS.js"
 
 export class TailleCartComponent{
     /** @type {HTMLElement} */
@@ -12,9 +13,14 @@ export class TailleCartComponent{
      * @param {CartLocalStorage} cartLocalStorage
      */
     constructor(selecteurCSS, cartLocalStorage = new CartLocalStorage()){
-        this.#element = querySelector(selecteurCSS)
-        this.#cartLocalStorage = cartLocalStorage
-        this.updateComponent()
+        try{
+            this.#element = querySelector(selecteurCSS)
+            this.#cartLocalStorage = cartLocalStorage
+            this.updateComponent()
+        }
+        catch(e){
+            throw new ErrorSelectorCSS(`constructeur de  TailleCartComponent, mauvais selecteur CSS : '${selecteurCSS}'`)
+        }
     }
 
     updateComponent(){

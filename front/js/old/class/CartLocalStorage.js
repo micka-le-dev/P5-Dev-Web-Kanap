@@ -1,5 +1,5 @@
 import { updateLinkCart } from "../components/taille-cart.js"
-import { ErrorColorProduct } from "../Error/ErrorcolorProduct.js"
+import { ErrorColorProduct } from "../Error/ErrorColorProduct.js"
 import { appendMessageToElement } from "../functions/dom.js"
 import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
 

@@ -1,0 +1,1 @@
+export class ErrorSelectorCSS extends Error {}

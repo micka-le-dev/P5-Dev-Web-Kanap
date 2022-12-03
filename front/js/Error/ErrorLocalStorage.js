@@ -1,0 +1,1 @@
+export class ErrorLocalStorage extends Error {}
