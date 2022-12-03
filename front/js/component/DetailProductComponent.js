@@ -35,9 +35,6 @@ export class DetailProductComponent{
     /** @type {HTMLElement} */
     #quantityElement
 
-    /** @type {string | undefined} */
-    #couleurSelectione
-
     /** @type {ItemCart} */
     #dejaDansPanier
     /** @type {Produit} */
@@ -77,7 +74,7 @@ cette function prend 3 paramettres :
      */
     set actionClickBtn(actionBtn) {
         this.#actionBtn = actionBtn
-        this.#btnActionOnCart.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
+        this.#btnActionOnCart?.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
     }
 
     /**
@@ -114,6 +111,9 @@ cette function prend 3 paramettres :
             .querySelector('#description')
             .innerText = produit.description
 
+        this.#quantityElement = document.querySelector('#quantity')
+        quantityElement.addEventListener('change', event => { this.#quantityChange() })
+
         this.#colorsElement = elementDetail.querySelector('#colors')
         produit.colors.forEach( color => {
                 const colorElement = createElement('option',
@@ -121,22 +121,13 @@ cette function prend 3 paramettres :
                                                     color
                                                   )
                 if( color === dejaDansPanier?.color){
-                    this.#couleurSelectione = color
+                    this.#colorChange(color)
                     this.#updateTextBtn('add')
                     colorElement.setAttribute('selected','')
                 }
                 this.#colorsElement.append(colorElement)
             })
         this.#colorsElement.addEventListener('change', event => { this.#colorChange(event.target.value) })
-
-        this.#quantityElement = document.querySelector('#quantity')
-        if( ! this.#couleurSelectione )
-            quantityElement.disabled = true
-        else if ( dejaDansPanier?.quantity >= 1 ) {
-            quantityElement.value = dejaDansPanier.quantity
-            quantityElement.setAttribute('data-old-value', quantityElement.value)
-        }
-        quantityElement.addEventListener('change', event => { this.#quantityChange() })
 
         this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
 

@@ -14,7 +14,7 @@ export class TailleCartComponent{
      */
     constructor(selecteurCSS, cartLocalStorage = new CartLocalStorage()){
         try{
-            this.#element = querySelector(selecteurCSS)
+            this.#element = document.querySelector(selecteurCSS)
             this.#cartLocalStorage = cartLocalStorage
             this.updateComponent()
         }
