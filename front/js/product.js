@@ -7,12 +7,20 @@ const id = url.searchParams.get("id")
 
 let messageDErreur
 
+const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
+
 const cartLocalStorage = new CartLocalStorage()
 
 const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
 
-const detailElement = document.querySelector('section.item > article')
-const detailProductComponent = new DetailProductComponent(cartLocalStorage, detailElement)
-
-const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
+/**
+ * @param {string} idProduct
+ * @param {string} color
+ * @param {number} quantity
+ */
+const actionBtnAddCart = function (idProduct, color, quantity){
+    cartLocalStorage.updateItem( { idProduct, color, quantity } )
+    tailleCartComponent.updateComponent()
+}
+const detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article', actionBtnAddCart)
 detailProductComponent.initDetailProduct(detailProduit)

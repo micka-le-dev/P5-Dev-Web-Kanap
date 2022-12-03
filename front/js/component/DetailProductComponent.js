@@ -50,12 +50,12 @@ export class DetailProductComponent{
 
     /**
      * @param {CartLocalStorage} cartLocalStorage
-     * @param {HTMLElement} contenerDetailElement
+     * @param {string} selecteurCSS
      * @param {Function} actionBtn prenant 3 paramettres un idProduct, color, quantity
      */
-    constructor(cartLocalStorage, contenerDetailElement, actionBtn){
+    constructor(cartLocalStorage, selecteurCSS, actionBtn){
         this.#cartLocalStorage = cartLocalStorage
-        this.#contenerDetailElement = contenerDetailElement
+        this.#contenerDetailElement = document.querySelector(selecteurCSS)
         this.#actionBtn = actionBtn
     }
 
