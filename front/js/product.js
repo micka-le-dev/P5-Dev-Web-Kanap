@@ -2,11 +2,13 @@ import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { DetailProductComponent } from "./component/DetailProductComponent.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 import { ErrorId } from "./Error/ErrorId.js"
+import { fetchGetJson } from "./functions/fetch.js"
+import { urlApi } from "./var.js"
 
 
 const cartLocalStorage = new CartLocalStorage()
-const detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article')
 const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
+const detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article')
 
 try{
 

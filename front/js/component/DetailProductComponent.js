@@ -1,5 +1,5 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
-import { replaceContentElementByMessage } from "../functions/dom.js";
+import { createElement, replaceContentElementByMessage } from "../functions/dom.js";
 
 /**
  * @typedef {object} Produit
@@ -111,16 +111,18 @@ cette function prend 3 paramettres :
             .querySelector('#description')
             .innerText = produit.description
 
-        this.#quantityElement = document.querySelector('#quantity')
-        quantityElement.addEventListener('change', event => { this.#quantityChange() })
+        this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
 
-        this.#colorsElement = elementDetail.querySelector('#colors')
+        this.#quantityElement = this.#contenerDetailElement.querySelector('#quantity')
+        this.#quantityElement.addEventListener('change', event => { this.#quantityChange() })
+
+        this.#colorsElement = this.#contenerDetailElement.querySelector('#colors')
         produit.colors.forEach( color => {
                 const colorElement = createElement('option',
                                                     {value: color },
                                                     color
                                                   )
-                if( color === dejaDansPanier?.color){
+                if( color === this.#dejaDansPanier?.color){
                     this.#colorChange(color)
                     this.#updateTextBtn('add')
                     colorElement.setAttribute('selected','')
@@ -128,8 +130,6 @@ cette function prend 3 paramettres :
                 this.#colorsElement.append(colorElement)
             })
         this.#colorsElement.addEventListener('change', event => { this.#colorChange(event.target.value) })
-
-        this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
 
         return this.#contenerDetailElement
     }
@@ -157,6 +157,7 @@ cette function prend 3 paramettres :
     }
 
     #quantityChange(){
+        const input = this.#quantityElement
         const oldValue = input.getAttribute('data-old-value') ?? 1
 
         let val = input.value * 1
