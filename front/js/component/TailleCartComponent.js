@@ -11,9 +11,9 @@ export class TailleCartComponent{
      * @param {string} selecteurCSS
      * @param {CartLocalStorage} cartLocalStorage
      */
-    constructor(selecteurCSS, cartLocalStorage = undefined){
+    constructor(selecteurCSS, cartLocalStorage = new CartLocalStorage()){
         this.#element = querySelector(selecteurCSS)
-        this.#cartLocalStorage = cartLocalStorage ?? new CartLocalStorage()
+        this.#cartLocalStorage = cartLocalStorage
     }
 
     updateComponent(){

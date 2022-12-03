@@ -30,31 +30,45 @@ export class DetailProductComponent{
     #btnActionOnCart
 
     /** @type {HTMLElement} */
+    #colorsElement
+    /** @type {HTMLElement} */
     #quantityElement
-
-    /** @type {string} valeur possible : "add" "suppr" */
-    #statusBtn
 
     /** @type {string | undefined} */
     #couleurSelectione
 
     /** @type {ItemCart} */
     #dejaDansPanier
+    /** @type {Produit} */
+    #produit
+
+    /** @type {Function} */
+    #actionBtn = (idProduct, color, quantity) => {}
+
+
+
 
     /**
      * @param {CartLocalStorage} cartLocalStorage
-     * @param {HTMLElement} contenerDetailElement 
+     * @param {HTMLElement} contenerDetailElement
+     * @param {Function} actionBtn prenant 3 paramettres un idProduct, color, quantity
      */
-    constructor(cartLocalStorage, contenerDetailElement){
+    constructor(cartLocalStorage, contenerDetailElement, actionBtn){
         this.#cartLocalStorage = cartLocalStorage
         this.#contenerDetailElement = contenerDetailElement
+        this.#actionBtn = actionBtn
     }
+
+    get id() { return this.#produit.idProduct }
+    get color() { return this.#colorsElement.value }
+    get quantity() { return this.#quantityElement.value }
 
     /**
      * @param {Produit} produit
      */
     initDetailProduct(produit){
-        this.#dejaDansPanier = this.#cartLocalStorage.findAProduct(produit._id)
+        this.#produit = produit
+        this.#dejaDansPanier = this.#cartLocalStorage.findByIdProduct(produit._id)
 
         const img = createElement('img',{
             src: produit.imageUrl,
@@ -76,7 +90,7 @@ export class DetailProductComponent{
             .querySelector('#description')
             .innerText = produit.description
 
-        const colorsElement = elementDetail.querySelector('#colors')
+        this.#colorsElement = elementDetail.querySelector('#colors')
         produit.colors.forEach( color => {
                 const colorElement = createElement('option',
                                                     {value: color },
@@ -84,12 +98,12 @@ export class DetailProductComponent{
                                                   )
                 if( color === dejaDansPanier?.color){
                     this.#couleurSelectione = color
-                    this.#statusBtn = 'add'
+                    this.#updateTextBtn('add')
                     colorElement.setAttribute('selected','')
                 }
-                colorsElement.append(colorElement)
+                this.#colorsElement.append(colorElement)
             })
-        colorsElement.addEventListener('change', event => { this.#updateInputquantity(event.target.value) })
+        this.#colorsElement.addEventListener('change', event => { this.#colorChange(event.target.value) })
 
         this.#quantityElement = document.querySelector('#quantity')
         if( ! this.#couleurSelectione )
@@ -98,16 +112,74 @@ export class DetailProductComponent{
             quantityElement.value = dejaDansPanier.quantity
             quantityElement.setAttribute('data-old-value', quantityElement.value)
         }
-        quantityElement.addEventListener('change', event => {/* faire des trucs */})
+        quantityElement.addEventListener('change', event => { this.#quantityChange() })
 
         this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
+        this.#btnActionOnCart.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
 
         return this.#contenerDetailElement
     }
 
-    #updateInputquantity(color){
+    #updateInputQuantityFromCart(){
         const quantity = this.#dejaDansPanier?.quantity ?? 1
         this.#quantityElement.value = quantity
         this.#quantityElement.setAttribute('data-old-value', quantity)
+    }
+
+    /**
+     * @param {string} color
+     */
+    #colorChange(color){
+        if ( color == '' ){
+            this.#dejaDansPanier = undefined
+            this.#updateTextBtn(undefined)
+            this.#quantityElement.disabled = true
+            return
+        }
+        this.#quantityElement.disabled = false
+        this.#updateTextBtn('add')
+        this.#dejaDansPanier = this.#cartLocalStorage.findByIdAndColor(this.#produit.idProduct, color)
+        this.#updateInputQuantityFromCart()
+    }
+
+    #quantityChange(){
+        const oldValue = input.getAttribute('data-old-value') ?? 1
+
+        let val = input.value * 1
+
+        if( // erreur de manipulation de la part de l'utilisateur
+            input.value == ''
+            || val < 0
+        )
+        {
+            input.value = oldValue
+            return
+        }
+
+        if( val === 0){
+            this.#updateTextBtn('suppr')
+            return
+        }
+        this.#updateTextBtn('add')
+
+        let min = input.getAttribute('min') * 1 ?? 1
+        let max = input.getAttribute('max') * 1 ?? 100
+        val = val <= min ? min : val
+        val = val >= max ? max : val
+
+        input.value = val
+        input.setAttribute('data-old-value', val)
+    }
+
+    /**
+     * @param {string | undefined} statusBtn "add", "suppr"
+     */
+    #updateTextBtn(statusBtn){
+        if( statusBtn === 'add' )
+            this.#btnActionOnCart.innerText = 'Ajouter au panier'
+        else if( statusBtn === 'suppr' )
+            this.#btnActionOnCart.innerText = 'supprimer du panier'
+        else
+            this.#btnActionOnCart.innerText = 'Ajouter au panier'
     }
 }

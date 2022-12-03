@@ -116,7 +116,7 @@ export class CartLocalStorage{
         })
     }
     /**
-     * cherche si une produit de cetee couleur est dans le panier
+     * cherche si une produit de cette couleur est dans le panier
      * @param {ItemCart} item
      * @return { ItemCart }
      */
@@ -133,8 +133,17 @@ export class CartLocalStorage{
      * @param {string} idProduct
      * @return {ItemCart}
      */
-    findAProduct(idProduct){
+    findByIdProduct(idProduct){
         return this.#panier.find(item => item.idProduct === idProduct)
+    }
+    /**
+     * cherche si une produit de cette couleur est dans le panier
+     * @param {string} idProduct
+     * @param {string} color
+     * @return {ItemCart}
+     */
+    findByIdAndColor(idProduct,color){
+        return this.find({idProduct, color, quantity: 1})
     }
 
     /**
@@ -147,8 +156,6 @@ export class CartLocalStorage{
         this.#updateLocalStorage()
 
         this.console()
-
-        updateLinkCart(this)
     }
 
     /**
