@@ -1,4 +1,5 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
+import { replaceContentElementByMessage } from "../function/dom.js";
 
 /**
  * @typedef {object} Produit
@@ -42,7 +43,12 @@ export class DetailProductComponent{
     /** @type {Produit} */
     #produit
 
-    /** @type {Function} */
+    /**
+     * @type {Function}
+     * @param {string} idProduct
+     * @param {string} color
+     * @param {number} quantity
+     */
     #actionBtn = (idProduct, color, quantity) => {}
 
 
@@ -51,9 +57,9 @@ export class DetailProductComponent{
     /**
      * @param {CartLocalStorage} cartLocalStorage
      * @param {string} selecteurCSS
-     * @param {Function} actionBtn prenant 3 paramettres un idProduct, color, quantity
+     * @param {Function} actionBtn prenant 3 paramettres un idProduct, color, quantity; par defaut, affiche un message dans la console
      */
-    constructor(cartLocalStorage, selecteurCSS, actionBtn){
+    constructor(cartLocalStorage, selecteurCSS, actionBtn = (idProduct, color, quantity) => console.log('click on btn :', idProduct,color,quantity)){
         this.#cartLocalStorage = cartLocalStorage
         this.#contenerDetailElement = document.querySelector(selecteurCSS)
         this.#actionBtn = actionBtn
@@ -63,6 +69,18 @@ export class DetailProductComponent{
     get color() { return this.#colorsElement.value }
     get quantity() { return this.#quantityElement.value }
 
+    /**
+     * @param {Function} actionBtn param1 {string} idProduct,  param2 {string} color,  param3 {number} quantity
+     */
+    set actionClickBtn(actionBtn) { this.#actionBtn = actionBtn }
+
+    /**
+     * @param {string} message
+     * @returns {HTMLElement} le paragraphe créé
+     */
+    setMessageError(message){
+        return replaceContentElementByMessage(this.#contenerDetailElement, message)
+    }
     /**
      * @param {Produit} produit
      */

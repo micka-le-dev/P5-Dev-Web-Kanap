@@ -5,22 +5,20 @@ import { TailleCartComponent } from "./component/TailleCartComponent.js"
 const url = new URL(window.location.href)
 const id = url.searchParams.get("id")
 
-let messageDErreur
-
-const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
-
-const cartLocalStorage = new CartLocalStorage()
-
-const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
-
 /**
  * @param {string} idProduct
  * @param {string} color
  * @param {number} quantity
  */
-const actionBtnAddCart = function (idProduct, color, quantity){
+const cartLocalStorage = new CartLocalStorage()
+const detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article')
+const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
+
+let messageDErreur
+
+detailProductComponent.actionClickBtn = function (idProduct, color, quantity){
     cartLocalStorage.updateItem( { idProduct, color, quantity } )
     tailleCartComponent.updateComponent()
 }
-const detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article', actionBtnAddCart)
+const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
 detailProductComponent.initDetailProduct(detailProduit)
