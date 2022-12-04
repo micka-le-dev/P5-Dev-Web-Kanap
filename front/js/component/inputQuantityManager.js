@@ -6,6 +6,11 @@ export class InputQuantityManager{
     /** @type {boolean} */
     #deletable
 
+    /** @type {Function} */
+    #oldCallBack
+
+
+
     /**
      * @param {HTMLElement} inputQuantityElement
      * @param {boolean} deletable
@@ -15,18 +20,31 @@ export class InputQuantityManager{
         this.#deletable = deletable
     }
 
-    quantityChange(){
-        const input = this.#inputElement
-        const oldValue = input.getAttribute('data-old-value') ?? 1
+    /**
+     * @param {Function} newActionChangeValue
+     */
+    actionChangeValue(newActionChangeValue) {
+        this.#inputElement.removeEventListener('click', this.#oldCallBack )
+        this.#oldCallBack = newActionChangeValue
+        this.#inputElement.addEventListener('click', newActionChangeValue )
+    }
 
-        let val = input.value * 1
+    /**
+     * corrige les erreurs de saisi et indique comment évolue la quantité
+     * @returns {string} 'no-change', 'delete', 'decrease' ou 'increase'
+     */
+    correctQuantity(){
+        const oldValue = this.#inputElement.getAttribute('data-old-value') ?? 1
+
+        let val = this.quantity
 
         if( // erreur de manipulation de la part de l'utilisateur
-            input.value == ''
+            this.quantity == ''
             || val < 0
+            || val == oldValue
         )
         {
-            input.value = oldValue
+            this.quantity = oldValue
             return 'no-change'
         }
 
@@ -34,13 +52,52 @@ export class InputQuantityManager{
             return 'delete'
         }
 
-        let min = input.getAttribute('min') * 1 ?? 1
-        let max = input.getAttribute('max') * 1 ?? 100
-        val = val <= min ? min : val
-        val = val >= max ? max : val
+        this.quantity = val
+        return val < oldValue ? 'decrease' : 'increase'
+    }
 
-        input.value = val
-        input.setAttribute('data-old-value', val)
-        return 'update'
+
+    /**
+     * @type {Number}
+     */
+    get quantity() { return this.getQuantity() }
+
+    /**
+     * @type {Number}
+     */
+    set quantity(newValue) { this.setQuantity(newValue) }
+
+
+    /**
+     * @returns {Number}
+     */
+    getQuantity() {
+        return this.#inputElement.value * 1
+    }
+
+    /**
+     * @param {Number} quantity
+     */
+     setQuantity(quantity){
+
+        if ( isNaN(quantity) )
+            throw new Error("quantity n'est pas un nombre")
+
+        if ( quantity < 0 )
+            throw new Error("une quantité ne peut pas être négative")
+
+        if (
+            quantity > 0
+            || ! this.#deletable
+        ){
+            const min = this.#inputElement.getAttribute('min') * 1 ?? 1
+            quantity = quantity < min ? min : quantity
+        }
+
+        const max = input.getAttribute('max') * 1 ?? 100
+        quantity = quantity > max ? max : quantity
+
+        this.#inputElement.value = quantity
+        input.setAttribute('data-old-value', quantity)
     }
 }

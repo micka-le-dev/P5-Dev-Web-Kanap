@@ -64,7 +64,7 @@ export class DetailProductComponent{
     get quantity() { return this.#quantityElement?.value }
 
     /**
-     * @param {Function} actionBtn param1 {string} idProduct,  param2 {string} color,  param3 {number} quantity
+     * @param {Function} actionBtn
      */
     actionClickBtn(actionBtn) {
         this.#btnActionCartElement.removeEventListener('click', this.#oldCallBack )
