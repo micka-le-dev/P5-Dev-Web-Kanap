@@ -25,10 +25,15 @@ try{
      * @param {string} color
      * @param {number} quantity
      */
-    detailProductComponent.actionClickBtn = function (idProduct, color, quantity){
-                                                cartLocalStorage.updateItem( { idProduct, color, quantity } )
+    detailProductComponent.actionClickBtn( () => {
+                                                const action = cartLocalStorage.updateItem( { 
+                                                            idProduct: detailProductComponent.idProduct,
+                                                            color: detailProductComponent.color,
+                                                            quantity: detailProductComponent.quantity } )
                                                 tailleCartComponent.updateComponent()
-                                            }
+                                                console.log('actionClickBtn', action)
+                                                // aff message ephemère pour indique ce qu'il ce passe à l'utilisateur
+                                         })
 
 }catch(err){
     if( err instanceof ErrorId)

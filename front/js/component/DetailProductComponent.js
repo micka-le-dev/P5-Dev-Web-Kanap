@@ -28,7 +28,7 @@ export class DetailProductComponent{
     #contenerDetailElement
 
     /** @type {HTMLElement} */
-    #btnActionOnCart
+    #btnActionCartElement
 
     /** @type {HTMLElement} */
     #colorsElement
@@ -41,18 +41,12 @@ export class DetailProductComponent{
     #produit
 
     /**
-     * @type {Function}
-     * @param {string} idProduct
-     * @param {string} color
-     * @param {number} quantity
+     * @type {string}
      */
-    #actionBtn = (idProduct, color, quantity) => console.log(
-`classe DetailProductComponent : l'action du bouton #addToCart n'est pas défini, utiliser le setter actionClickBtn pour la definir
-cette function prend 3 paramettres :
-    idProduct : string,
-    color : string,
-    quantity : number`)
+    #actionBtnNotDefined = `classe DetailProductComponent : l'action du bouton #addToCart n'est pas défini, utiliser la méthode actionClickBtn pour la definir`
 
+    /** @type {Function} */
+    #oldCallBack
 
 
 
@@ -65,16 +59,17 @@ cette function prend 3 paramettres :
         this.#contenerDetailElement = document.querySelector(selecteurCSS)
     }
 
-    get id() { return this.#produit.idProduct }
-    get color() { return this.#colorsElement.value }
-    get quantity() { return this.#quantityElement.value }
+    get idProduct() { return this.#produit._id }
+    get color() { return this.#colorsElement?.value }
+    get quantity() { return this.#quantityElement?.value }
 
     /**
      * @param {Function} actionBtn param1 {string} idProduct,  param2 {string} color,  param3 {number} quantity
      */
-    set actionClickBtn(actionBtn) {
-        this.#actionBtn = actionBtn
-        this.#btnActionOnCart?.addEventListener('click', this.#actionBtn(this.id, this.color, this.quantity) )
+    actionClickBtn(actionBtn) {
+        this.#btnActionCartElement.removeEventListener('click', this.#oldCallBack )
+        this.#oldCallBack = actionBtn
+        this.#btnActionCartElement.addEventListener('click', actionBtn )
     }
 
     /**
@@ -111,7 +106,8 @@ cette function prend 3 paramettres :
             .querySelector('#description')
             .innerText = produit.description
 
-        this.#btnActionOnCart = this.#contenerDetailElement.querySelector('#addToCart')
+        this.#btnActionCartElement = this.#contenerDetailElement.querySelector('#addToCart')
+        this.actionClickBtn(() => console.log(this.#actionBtnNotDefined))
 
         this.#quantityElement = this.#contenerDetailElement.querySelector('#quantity')
         this.#quantityElement.addEventListener('change', event => { this.#quantityChange() })
@@ -191,10 +187,10 @@ cette function prend 3 paramettres :
      */
     #updateTextBtn(statusBtn){
         if( statusBtn === 'add' )
-            this.#btnActionOnCart.innerText = 'Ajouter au panier'
+            this.#btnActionCartElement.innerText = 'Ajouter au panier'
         else if( statusBtn === 'suppr' )
-            this.#btnActionOnCart.innerText = 'supprimer du panier'
+            this.#btnActionCartElement.innerText = 'supprimer du panier'
         else
-            this.#btnActionOnCart.innerText = 'Ajouter au panier'
+            this.#btnActionCartElement.innerText = 'Ajouter au panier'
     }
 }

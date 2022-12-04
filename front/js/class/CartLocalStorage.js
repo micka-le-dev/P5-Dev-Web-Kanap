@@ -1,6 +1,7 @@
 import { ErrorColorProduct } from "../Error/ErrorColorProduct.js"
 import { appendMessageToElement } from "../functions/dom.js"
 import { getArrayLocalStorage, setArrayLocalStorage } from "../functions/localStorage.js"
+import { isString } from "../functions/utils.js"
 
 /**
  * @typedef {object} Produit
@@ -147,26 +148,54 @@ export class CartLocalStorage{
 
     /**
      * @param {ItemCart} item
+     * @return {string}
      */
      updateItem(item){
-        item.quantity *= 1
-        this.#updateItemOfArray(item)
+        item.quantity = item.quantity * 1 ?? undefined
+
+        if ( ! this.itemIsValid(item) )
+            return
+
+        const action = this.#updateItemOfArray(item)
         this.#sort()
         this.#updateLocalStorage()
 
         this.console()
+
+        return action
     }
 
     /**
      * @param {ItemCart} item
+     * @returns {boolean}
+     */
+    itemIsValid(item){
+        if(
+            item
+            && isString( item.idProduct )
+            && isString( item.color )
+            && Number.isInteger(item.quantity)
+        )
+            return true
+        return false
+    }
+    /**
+     * @param {ItemCart} item
+     * @return {string}
      */
     #updateItemOfArray(item){
-        if( item.quantity >= 1)
+        let action
+        if( item.quantity >= 1){
             this.#addItem(item)
-        else if( item.quantity == 0)
+            action = 'add'
+        }
+        else if( item.quantity == 0){
             this.#removeItem(item)
+            action = 'suppr'
+        }
 
         this.#compteNbArticle()
+        return action
     }
 
     /**
