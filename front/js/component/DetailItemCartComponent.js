@@ -1,3 +1,4 @@
+import { InputQuantityManager } from "./inputQuantityManager.js"
 
 /**
  * @typedef {object} ItemCartAllData
@@ -26,7 +27,7 @@
     #itemElement
 
     /** @type {HTMLElement} */
-    #template
+    #inputQuantityManager
 
     /** @type {ItemCartAllData} */
     #itemCartAllData
@@ -36,9 +37,8 @@
      * @param {ItemCartAllData} itemCartAllData
      */
     constructor(template, itemCartAllData){
-        this.#template = template
-
         this.#itemElement = template.content.cloneNode(true).querySelector('.cart__item')
+        this.#inputQuantityManager = new InputQuantityManager(this.#itemElement.querySelector('.itemQuantity'), false)
         this.update(itemCartAllData)
     }
 
@@ -63,17 +63,15 @@
         ps[0].innerText = this.#itemCartAllData.color
         ps[1].innerText = this.#itemCartAllData.priceWithQuantity + " €"
 
-        const inputQuantity = this.#itemElement.querySelector('.itemQuantity')
-        inputQuantity.value = this.#itemCartAllData.quantity
-        inputQuantity.setAttribute('data-old-value', inputQuantity.value)
-        inputQuantity.addEventListener('change', event => {
-                    conrrigeInputNombre(event.target, false)
-                    this.#dispatchEventChangeQuantity(event.target)
-                })
+        this.#inputQuantityManager.quantity = this.#itemCartAllData.quantity
+        this.#inputQuantityManager.actionChangeValue( () => {
+                                            this.#inputQuantityManager.correctQuantity()
+                                            this.#dispatchEventChangeQuantity(this.#inputQuantityManager.quantity)
+                                        })
 
         this.#itemElement
             .querySelector('.deleteItem')
-            .addEventListener('click', event => this.#dispatchEventDetete(event))
+            .addEventListener('click', this.#dispatchEventDetete)
     }
 
     /**
@@ -86,13 +84,12 @@
     /**
      * @param {HTMLInputElement} input 
      */
-     #dispatchEventChangeQuantity(input){
-        conrrigeInputNombre(input)
+     #dispatchEventChangeQuantity(quantity){
         const eventUpdateItemCart = new CustomEvent('updateCart',{
             detail: {
                 idProduct: this.#itemCartAllData.idProduct,
                 color: this.#itemCartAllData.color,
-                quantity : input.value*1
+                quantity : quantity*1
             },
             bubbles: true,
             cancelable: true

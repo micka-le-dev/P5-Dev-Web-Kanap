@@ -26,7 +26,7 @@ try{
      * @param {number} quantity
      */
     detailProductComponent.actionClickBtn( () => {
-                                                const action = cartLocalStorage.updateItem( { 
+                                                const action = cartLocalStorage.updateItem( {
                                                             idProduct: detailProductComponent.idProduct,
                                                             color: detailProductComponent.color,
                                                             quantity: detailProductComponent.quantity } )

@@ -186,8 +186,7 @@ export class CartLocalStorage{
     #updateItemOfArray(item){
         let action
         if( item.quantity >= 1){
-            this.#addItem(item)
-            action = 'add'
+            action = this.#addItem(item)
         }
         else if( item.quantity == 0){
             this.#removeItem(item)
@@ -203,13 +202,22 @@ export class CartLocalStorage{
      */
      #addItem(item){
         const index = this.#findIndex(item)
-
-        if( index >= 0 )
-            this.#panier[index].quantity = item.quantity
-        else
+        let action
+        if( index >= 0 ){
+            if( this.#panier[index].quantity != item.quantity ){
+                action = 'update-quantity'
+                this.#panier[index].quantity = item.quantity
+            }
+            else
+                action = 'no-change'
+        }
+        else{
             this.#panier.push(item)
+            action = 'add'
+        }
 
         this.#messageModifPanier = 'Ajouté au panier'
+        return action
     }
 
     /**

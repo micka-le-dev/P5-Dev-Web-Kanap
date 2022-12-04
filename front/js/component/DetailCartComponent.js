@@ -1,3 +1,6 @@
+import { CartAllData } from "../class/CartAllData.js"
+import { replaceContentElementByMessage } from "../functions/dom.js"
+import { DetailItemCartComponent } from "./DetailItemCartComponent.js"
 
 
 export class DetailCartComponent{

@@ -63,7 +63,7 @@ export class DetailProductComponent{
 
     get idProduct() { return this.#produit._id }
     get color() { return this.#colorsElement?.value }
-    get quantity() { return this.#quantityManager?.value }
+    get quantity() { return this.#quantityManager?.quantity }
 
     /**
      * @param {Function} actionBtn

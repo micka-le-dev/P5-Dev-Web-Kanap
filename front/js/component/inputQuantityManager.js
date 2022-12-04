@@ -29,6 +29,10 @@ export class InputQuantityManager{
         this.#inputElement.addEventListener('change', newActionChangeValue )
     }
 
+    /**
+     * @return {HTMLElement}
+     */
+    get element() { return this.#inputElement }
 
     /**
      * @return {Number | undefined}

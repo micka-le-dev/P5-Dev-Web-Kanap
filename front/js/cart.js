@@ -1,4 +1,5 @@
 import { CartLocalStorage } from "./class/CartLocalStorage.js"
+import { DetailCartComponent } from "./component/DetailCartComponent.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 
 const cartLocalStorage = new CartLocalStorage()
