@@ -12,8 +12,8 @@ const contenerCatalogElement = document.querySelector('#items')
 
 try{
     const catalogue = await fetchGetJson(urlApi)
-    const catalogueComponant = new CatalogueComponent(catalogue)
-    catalogueComponant.appendTo(contenerCatalogElement)
+    const catalogueComponent = new CatalogueComponent(catalogue)
+    catalogueComponent.appendTo(contenerCatalogElement)
 }
 catch(err){
     replaceContentElementByMessage(contenerCatalogElement, 'Désolé, impossible de charger nos produit.')
