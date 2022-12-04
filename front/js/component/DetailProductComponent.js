@@ -1,5 +1,6 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
 import { createElement, replaceContentElementByMessage } from "../functions/dom.js";
+import { InputQuantityManager } from "./inputQuantityManager.js";
 
 /**
  * @typedef {object} Produit
@@ -32,8 +33,9 @@ export class DetailProductComponent{
 
     /** @type {HTMLElement} */
     #colorsElement
-    /** @type {HTMLElement} */
-    #quantityElement
+
+    /** @type {InputQuantityManager} */
+    #quantityManager
 
     /** @type {ItemCart} */
     #dejaDansPanier
@@ -61,7 +63,7 @@ export class DetailProductComponent{
 
     get idProduct() { return this.#produit._id }
     get color() { return this.#colorsElement?.value }
-    get quantity() { return this.#quantityElement?.value }
+    get quantity() { return this.#quantityManager?.value }
 
     /**
      * @param {Function} actionBtn
@@ -109,8 +111,8 @@ export class DetailProductComponent{
         this.#btnActionCartElement = this.#contenerDetailElement.querySelector('#addToCart')
         this.actionClickBtn(() => console.log(this.#actionBtnNotDefined))
 
-        this.#quantityElement = this.#contenerDetailElement.querySelector('#quantity')
-        this.#quantityElement.addEventListener('change', event => { this.#quantityChange() })
+        this.#quantityManager = new InputQuantityManager( this.#contenerDetailElement.querySelector('#quantity'), true )
+        this.#quantityManager.actionChangeValue(() => { this.#quantityChange() })
 
         this.#colorsElement = this.#contenerDetailElement.querySelector('#colors')
         produit.colors.forEach( color => {
@@ -130,12 +132,6 @@ export class DetailProductComponent{
         return this.#contenerDetailElement
     }
 
-    #updateInputQuantityFromCart(){
-        const quantity = this.#dejaDansPanier?.quantity ?? 1
-        this.#quantityElement.value = quantity
-        this.#quantityElement.setAttribute('data-old-value', quantity)
-    }
-
     /**
      * @param {string} color
      */
@@ -143,43 +139,37 @@ export class DetailProductComponent{
         if ( color == '' ){
             this.#dejaDansPanier = undefined
             this.#updateTextBtn(undefined)
-            this.#quantityElement.disabled = true
+            this.#quantityManager.disabled = true
             return
         }
-        this.#quantityElement.disabled = false
+        this.#quantityManager.disabled = false
         this.#updateTextBtn('add')
         this.#dejaDansPanier = this.#cartLocalStorage.findByIdAndColor(this.#produit.idProduct, color)
-        this.#updateInputQuantityFromCart()
+        const quantity = this.#dejaDansPanier?.quantity ?? 1
+        this.#quantityManager.quantity = quantity
     }
 
     #quantityChange(){
-        const input = this.#quantityElement
-        const oldValue = input.getAttribute('data-old-value') ?? 1
+        const evolutionQuantity = this.#quantityManager.correctQuantity()
 
-        let val = input.value * 1
+        console.log('evolutionQuantity', evolutionQuantity)
+        switch(evolutionQuantity){
 
-        if( // erreur de manipulation de la part de l'utilisateur
-            input.value == ''
-            || val < 0
-        )
-        {
-            input.value = oldValue
-            return
+            case 'delete':
+                this.#updateTextBtn('suppr')
+                break
+
+            case 'decrease':
+            case 'increase':
+                this.#updateTextBtn('add')
+                break
+
+            case 'no-change':
+                return
+
+            default:
+                this.#updateTextBtn()
         }
-
-        if( val === 0){
-            this.#updateTextBtn('suppr')
-            return
-        }
-        this.#updateTextBtn('add')
-
-        let min = input.getAttribute('min') * 1 ?? 1
-        let max = input.getAttribute('max') * 1 ?? 100
-        val = val <= min ? min : val
-        val = val >= max ? max : val
-
-        input.value = val
-        input.setAttribute('data-old-value', val)
     }
 
     /**

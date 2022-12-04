@@ -24,80 +24,112 @@ export class InputQuantityManager{
      * @param {Function} newActionChangeValue
      */
     actionChangeValue(newActionChangeValue) {
-        this.#inputElement.removeEventListener('click', this.#oldCallBack )
+        this.#inputElement.removeEventListener('change', this.#oldCallBack )
         this.#oldCallBack = newActionChangeValue
-        this.#inputElement.addEventListener('click', newActionChangeValue )
-    }
-
-    /**
-     * corrige les erreurs de saisi et indique comment évolue la quantité
-     * @returns {string} 'no-change', 'delete', 'decrease' ou 'increase'
-     */
-    correctQuantity(){
-        const oldValue = this.#inputElement.getAttribute('data-old-value') ?? 1
-
-        let val = this.quantity
-
-        if( // erreur de manipulation de la part de l'utilisateur
-            this.quantity == ''
-            || val < 0
-            || val == oldValue
-        )
-        {
-            this.quantity = oldValue
-            return 'no-change'
-        }
-
-        if( this.#deletable && val === 0){
-            return 'delete'
-        }
-
-        this.quantity = val
-        return val < oldValue ? 'decrease' : 'increase'
+        this.#inputElement.addEventListener('change', newActionChangeValue )
     }
 
 
     /**
-     * @type {Number}
+     * @return {Number | undefined}
      */
-    get quantity() { return this.getQuantity() }
+    get quantity() { return this.isVoid ? undefined : this.#inputElement.value * 1 }
+
+    /** @return {boolean} */
+    get isVoid() { return isNaN(this.#inputElement.value) }
 
     /**
-     * @type {Number}
+     * @param {Number} newValue
      */
     set quantity(newValue) { this.setQuantity(newValue) }
 
+    /** @param {boolean} putDisabled */
+    set disabled(putDisabled) { this.#inputElement.disabled = putDisabled }
 
     /**
-     * @returns {Number}
+     * @return {string} évolution de la quantité : 'no-change', 'delete', 'decrease' et 'increase'
      */
-    getQuantity() {
-        return this.#inputElement.value * 1
+     correctQuantity(){
+        return this.setQuantity(undefined)
+    }
+
+    /**
+     * si newQuantity est undefined, corrige la valeur de l'input
+     * @param {Number | undefined} newQuantity
+     * @return {string} évolution de la quantité : 'no-change', 'delete', 'decrease' et 'increase'
+     */
+     setQuantity(newQuantity){
+
+        let oldValue
+        let quantity
+        let initValue = false
+
+        if(newQuantity){
+            if ( isNaN(newQuantity) )
+                throw new Error("quantity n'est pas un nombre")
+
+            if ( newQuantity < 0 )
+                throw new Error("une quantité ne peut pas être négative")
+
+            if ( newQuantity == 0 && ! this.#deletable)
+                throw new Error("cette quantité ne peut pas être zéro")
+
+            quantity = newQuantity
+            initValue = true
+        }
+        else{
+            oldValue = this.#inputElement.getAttribute('data-old-value')
+            initValue = oldValue == undefined || oldValue === ''
+            oldValue = initValue ? 1 : oldValue * 1
+            quantity = this.quantity
+            if(
+                quantity != undefined
+                && (
+                    quantity < 0
+                    || (quantity == 0 && !this.#deletable)
+                    || quantity == oldValue
+                )
+            ){
+                this.#inputElement.value = oldValue
+                return 'no-change'
+            }
+        }
+
+        // ici quantity est un nombre >= 0 ou > 0 si ! deletable
+
+        if(
+            this.#deletable
+            && quantity == 0
+        ){
+            this.#forceSetQuantity(quantity)
+            return 'delete'
+        }
+
+        const min = (this.#inputElement.getAttribute('min') ?? 1) * 1
+        quantity = quantity < min ? min : quantity
+
+        const max = (this.#inputElement.getAttribute('max') ?? 100) * 1
+        quantity = quantity > max ? max : quantity
+
+        this.#forceSetQuantity(quantity)
+
+        if( quantity == oldValue )
+            return 'no-change'
+
+        if( initValue )
+            return 'init-value'
+
+        return quantity < oldValue ? 'decrease' : 'increase'
     }
 
     /**
      * @param {Number} quantity
      */
-     setQuantity(quantity){
-
+    #forceSetQuantity(quantity){
         if ( isNaN(quantity) )
             throw new Error("quantity n'est pas un nombre")
 
-        if ( quantity < 0 )
-            throw new Error("une quantité ne peut pas être négative")
-
-        if (
-            quantity > 0
-            || ! this.#deletable
-        ){
-            const min = this.#inputElement.getAttribute('min') * 1 ?? 1
-            quantity = quantity < min ? min : quantity
-        }
-
-        const max = input.getAttribute('max') * 1 ?? 100
-        quantity = quantity > max ? max : quantity
-
         this.#inputElement.value = quantity
-        input.setAttribute('data-old-value', quantity)
+        this.#inputElement.setAttribute('data-old-value', quantity)
     }
 }
