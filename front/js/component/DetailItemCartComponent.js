@@ -48,8 +48,6 @@ import { InputQuantityManager } from "./inputQuantityManager.js"
     update(itemCartAllData){
         this.#itemCartAllData = itemCartAllData
 
-        this.#itemElement.addEventListener('updateItemCart', event => updateItemCart(event))
-
         this.#itemElement.setAttribute('data-id',this.#itemCartAllData.idProduct)
         this.#itemElement.setAttribute('data-color',this.#itemCartAllData.color)
 
@@ -71,7 +69,7 @@ import { InputQuantityManager } from "./inputQuantityManager.js"
 
         this.#itemElement
             .querySelector('.deleteItem')
-            .addEventListener('click', this.#dispatchEventDetete)
+            .addEventListener('click', () => this.#dispatchEventChangeQuantity(0))
     }
 
     /**
@@ -85,7 +83,7 @@ import { InputQuantityManager } from "./inputQuantityManager.js"
      * @param {HTMLInputElement} input 
      */
      #dispatchEventChangeQuantity(quantity){
-        const eventUpdateItemCart = new CustomEvent('updateCart',{
+        const eventUpdateItemCart = new CustomEvent('updateItemCart',{
             detail: {
                 idProduct: this.#itemCartAllData.idProduct,
                 color: this.#itemCartAllData.color,
@@ -101,7 +99,7 @@ import { InputQuantityManager } from "./inputQuantityManager.js"
      * @param {Event} event
      */
     #dispatchEventDetete(event){
-        const eventUpdateItemCart = new CustomEvent('updateCart',{
+        const eventUpdateItemCart = new CustomEvent('updateItemCart',{
             detail: {
                 idProduct: this.#itemCartAllData.idProduct,
                 color: this.#itemCartAllData.color,

@@ -12,8 +12,9 @@ const cartComponent = new DetailCartComponent(cartAndOrderElement, templateItemC
 cartComponent.update(cartLocalStorage)
 
 
-cartAndOrderElement.addEventListener('updateCart', event => {
+cartAndOrderElement.addEventListener('updateItemCart', event => {
     const item = event.detail
     cartLocalStorage.updateItem(item)
     cartComponent.update(cartLocalStorage)
+    tailleCartComponent.updateComponent()
 })
