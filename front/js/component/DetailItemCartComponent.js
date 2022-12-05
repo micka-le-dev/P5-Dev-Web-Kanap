@@ -94,20 +94,4 @@ import { InputQuantityManager } from "./inputQuantityManager.js"
         })
         this.#itemElement.dispatchEvent(eventUpdateItemCart)
     }
-
-    /**
-     * @param {Event} event
-     */
-    #dispatchEventDetete(event){
-        const eventUpdateItemCart = new CustomEvent('updateItemCart',{
-            detail: {
-                idProduct: this.#itemCartAllData.idProduct,
-                color: this.#itemCartAllData.color,
-                quantity : 0
-            },
-            bubbles: true,
-            cancelable: true
-        })
-        this.#itemElement.dispatchEvent(eventUpdateItemCart)
-    }
 }

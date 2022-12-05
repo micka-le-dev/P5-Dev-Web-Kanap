@@ -22,6 +22,9 @@ export class DetailCartComponent{
         this.#cartAndOrderElement = cartItemsElement
         this.#templateItem = templateItem
     }
+    
+    
+    get catalogue() { return this.#cartAllData.catalogue }
 
     /**
      * @param {CartLocalStorage} cartLocalStorage 

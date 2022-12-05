@@ -14,7 +14,8 @@ cartComponent.update(cartLocalStorage)
 
 cartAndOrderElement.addEventListener('updateItemCart', event => {
     const item = event.detail
-    cartLocalStorage.updateItem(item)
+    const product = cartComponent.catalogue.find(elem => elem._id === item.idProduct)
+    cartLocalStorage.updateItem(item, product)
     cartComponent.update(cartLocalStorage)
     tailleCartComponent.updateComponent()
 })

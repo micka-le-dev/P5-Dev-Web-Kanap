@@ -29,7 +29,8 @@ try{
                                                 const action = cartLocalStorage.updateItem( {
                                                             idProduct: detailProductComponent.idProduct,
                                                             color: detailProductComponent.color,
-                                                            quantity: detailProductComponent.quantity } )
+                                                            quantity: detailProductComponent.quantity
+                                                        }, detailProduit )
                                                 tailleCartComponent.updateComponent()
                                                 console.log('actionClickBtn', action)
                                                 // aff message ephemère pour indique ce qu'il ce passe à l'utilisateur

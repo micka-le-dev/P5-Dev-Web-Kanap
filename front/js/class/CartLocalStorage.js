@@ -68,7 +68,7 @@ export class CartLocalStorage{
         const quantity = quantityElement.value * 1
 
         try{
-            this.add(product,color, quantity)
+            this.#add(product,color, quantity, product)
 
             appendMessageToElement(
                 this.#messageModifPanier,
@@ -85,8 +85,9 @@ export class CartLocalStorage{
      * @param {Produit} product
      * @param {string} color
      * @param {number} quantity
+     * @param {Produit} productAllDetails
      */
-    add(product, color, quantity){
+    #add(product, color, quantity, productAllDetails){
         quantity *= 1
         if( quantity < 0 )
             throw new Error(`${quantity} n'est pas une quantité valide`)
@@ -100,7 +101,7 @@ export class CartLocalStorage{
             color: color,
             quantity: quantity*1
         }
-        this.updateItem(item)
+        this.updateItem(item, productAllDetails)
     }
 
     /**
@@ -148,12 +149,13 @@ export class CartLocalStorage{
 
     /**
      * @param {ItemCart} item
+     * @param {Produit} productAllDetails
      * @return {string}
      */
-     updateItem(item){
+     updateItem(item,productAllDetails){
         item.quantity = item.quantity * 1 ?? undefined
 
-        if ( ! this.itemIsValid(item) )
+        if ( ! this.itemIsValid(item,productAllDetails) )
             return
 
         const action = this.#updateItemOfArray(item)
@@ -167,13 +169,18 @@ export class CartLocalStorage{
 
     /**
      * @param {ItemCart} item
+     * @param {Produit} productAllDetails
      * @returns {boolean}
      */
-    itemIsValid(item){
+    itemIsValid(item,productAllDetails){
         if(
             item
             && isString( item.idProduct )
             && isString( item.color )
+            && (
+                productAllDetails._id === item.idProduct
+                && productAllDetails.colors.find(couleur => couleur === item.color)
+            )
             && Number.isInteger(item.quantity)
         )
             return true

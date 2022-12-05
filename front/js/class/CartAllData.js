@@ -46,6 +46,8 @@ import { CartLocalStorage } from "./CartLocalStorage.js"
     /** @type {boolean} */
     #isCompleted = false
 
+
+
     /**
      * @param {CartLocalStorage} cartLocalStorage
      */
@@ -57,6 +59,7 @@ import { CartLocalStorage } from "./CartLocalStorage.js"
     get totalPrice() { return this.#totalPrice }
     get isOk() { return this.#isCompleted }
     get isNotOk() { return ! this.#isCompleted }
+    get catalogue() { return this.#catalogue }
 
     /**
      * contacte le serveur pour obtenir les prix des articles dans le panier

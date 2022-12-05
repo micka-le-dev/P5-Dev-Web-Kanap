@@ -114,6 +114,9 @@ export class DetailProductComponent{
         this.#quantityManager = new InputQuantityManager( this.#contenerDetailElement.querySelector('#quantity'), true )
         this.#quantityManager.actionChangeValue(() => { this.#quantityChange() })
 
+        this.#quantityManager.disabled = true
+        this.#updateTextBtn(undefined)
+
         this.#colorsElement = this.#contenerDetailElement.querySelector('#colors')
         produit.colors.forEach( color => {
                 const colorElement = createElement('option',
@@ -142,11 +145,11 @@ export class DetailProductComponent{
             this.#quantityManager.disabled = true
             return
         }
-        this.#quantityManager.disabled = false
         this.#updateTextBtn('add')
-        this.#dejaDansPanier = this.#cartLocalStorage.findByIdAndColor(this.#produit.idProduct, color)
+        this.#dejaDansPanier = this.#cartLocalStorage.findByIdAndColor(this.#produit._id, color)
         const quantity = this.#dejaDansPanier?.quantity ?? 1
         this.#quantityManager.quantity = quantity
+        this.#quantityManager.disabled = false
     }
 
     #quantityChange(){
