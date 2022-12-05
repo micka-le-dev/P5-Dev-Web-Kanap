@@ -197,7 +197,7 @@ export class CartLocalStorage{
         }
         else if( item.quantity == 0){
             this.#removeItem(item)
-            action = 'suppr'
+            action = 'delete'
         }
 
         this.#compteNbArticle()

@@ -2,7 +2,9 @@ import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { DetailProductComponent } from "./component/DetailProductComponent.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 import { ErrorId } from "./Error/ErrorId.js"
+import { messageAfterElement } from "./functions/dom.js"
 import { fetchGetJson } from "./functions/fetch.js"
+import { buildMessage } from "./functions/utils.js"
 import { urlApi } from "./var.js"
 
 
@@ -19,7 +21,11 @@ try{
 
     const detailProduit = await fetchGetJson(`${urlApi}/${id}`)
 
+    document.querySelector('title').innerText = detailProduit.name
     detailProductComponent.initDetailProduct(detailProduit)
+
+
+    let messageElement
     /**
      * @param {string} idProduct
      * @param {string} color
@@ -33,7 +39,13 @@ try{
                                                         }, detailProduit )
                                                 tailleCartComponent.updateComponent()
                                                 console.log('actionClickBtn', action)
-                                                // aff message ephemère pour indique ce qu'il ce passe à l'utilisateur
+                                                if( messageElement )
+                                                        messageElement.innerText = buildMessage(action)
+                                                else
+                                                        messageElement = messageAfterElement(
+                                                                                        buildMessage(action),
+                                                                                        document.querySelector('.item__content__addButton')
+                                                                                    )
                                          })
 
 }catch(err){
