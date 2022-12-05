@@ -36,22 +36,22 @@ export function appendMessageToElement(message, element){
     return messageElement
 }
 
-/**
- * @param {string} message
- * @param {HTMLElement} element
- * @returns {HTMLElement} le paragraphe créé
- */
-export function messageAfterElement(message, element){
-    const messageElement = createMessageElement(message)
-    element.insertAdjacentElement('afterend',messageElement)
-    return messageElement
-}
+// /**
+//  * @param {string} message
+//  * @param {HTMLElement} element
+//  * @returns {HTMLElement} le paragraphe créé
+//  */
+// export function messageAfterElement(message, element){
+//     const messageElement = createMessageElement(message)
+//     element.insertAdjacentElement('afterend',messageElement)
+//     return messageElement
+// }
 
 /**
  * @param {string} message
  * @returns {HTMLElement} le paragraphe créé
  */
-function createMessageElement(message){
+export function createMessageElement(message){
     const p = document.createElement('p')
     p.innerText = message
     p.style.textAlign = "center"

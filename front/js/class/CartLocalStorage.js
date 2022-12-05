@@ -33,9 +33,6 @@ export class CartLocalStorage{
     /** @type {number} */
     #nbArticle = 0
 
-    /** @type {string} */
-    #messageModifPanier
-
     /**
      * @param {string} keyLocalStorage
      */
@@ -52,42 +49,20 @@ export class CartLocalStorage{
             throw new Error("le panier n'est pas un tableau")
     }
 
+    /** @return {ItemCart[]} */
     get items() { return this.#panier }
-    get isVoid() {  return ! this.#panier || ! this.#panier.length }
+    /** @return {boolean} */
+    get isVoid() {  return ! this.#panier || this.#panier.length <= 0 }
 
-    /**
-     * @param {Event} event
-     * @param {HTMLElement} detailElement
-     * @param {Produit} product
-     */
-     addToCart(event, detailElement, product){
-        event.preventDefault()
-
-        const color = detailElement.querySelector('#colors').value
-        const quantityElement = detailElement.querySelector('#quantity')
-        const quantity = quantityElement.value * 1
-
-        try{
-            this.#add(product,color, quantity, product)
-
-            appendMessageToElement(
-                this.#messageModifPanier,
-                detailElement.querySelector('.item__content')
-            )
-        }
-        catch(err){
-            if( err instanceof ErrorColorProduct)
-                alert("Vous devez seléctionner une couleur pour ajouter ce produit au panier.")
-        }
-    }
 
     /**
      * @param {Produit} product
      * @param {string} color
      * @param {number} quantity
      * @param {Produit} productAllDetails
+     * @return {string} action réalisé
      */
-    #add(product, color, quantity, productAllDetails){
+    add(product, color, quantity){
         quantity *= 1
         if( quantity < 0 )
             throw new Error(`${quantity} n'est pas une quantité valide`)
@@ -101,7 +76,7 @@ export class CartLocalStorage{
             color: color,
             quantity: quantity*1
         }
-        this.updateItem(item, productAllDetails)
+        return this.updateItem(item)
     }
 
     /**
@@ -150,9 +125,9 @@ export class CartLocalStorage{
     /**
      * @param {ItemCart} item
      * @param {Produit} productAllDetails
-     * @return {string}
+     * @return {string} action réalisé
      */
-     updateItem(item,productAllDetails){
+     updateItem(item,productAllDetails = undefined){
         item.quantity = item.quantity * 1 ?? undefined
 
         if ( ! this.itemIsValid(item,productAllDetails) )
@@ -172,15 +147,18 @@ export class CartLocalStorage{
      * @param {Produit} productAllDetails
      * @returns {boolean}
      */
-    itemIsValid(item,productAllDetails){
+    itemIsValid(item,productAllDetails = undefined){
+        const compatibleAvecUnProduitExistant =
+                        productAllDetails == undefined
+                        ||(
+                            productAllDetails._id === item.idProduct
+                            && productAllDetails.colors.find(couleur => couleur === item.color)
+                          )
         if(
             item
             && isString( item.idProduct )
             && isString( item.color )
-            && (
-                productAllDetails._id === item.idProduct
-                && productAllDetails.colors.find(couleur => couleur === item.color)
-            )
+            && compatibleAvecUnProduitExistant
             && Number.isInteger(item.quantity)
         )
             return true
@@ -188,7 +166,7 @@ export class CartLocalStorage{
     }
     /**
      * @param {ItemCart} item
-     * @return {string}
+     * @return {string} action réalisé
      */
     #updateItemOfArray(item){
         let action
@@ -196,8 +174,7 @@ export class CartLocalStorage{
             action = this.#addItem(item)
         }
         else if( item.quantity == 0){
-            this.#removeItem(item)
-            action = 'delete'
+            action = this.#removeItem(item)
         }
 
         this.#compteNbArticle()
@@ -206,6 +183,7 @@ export class CartLocalStorage{
 
     /**
      * @param {ItemCart} item
+     * @return {string} action réalisé
      */
      #addItem(item){
         const index = this.#findIndex(item)
@@ -215,20 +193,20 @@ export class CartLocalStorage{
                 action = 'update-quantity'
                 this.#panier[index].quantity = item.quantity
             }
-            else
-                action = 'no-change'
+            else{
+                action = 'no-change-quantity'
+            }
         }
         else{
             this.#panier.push(item)
             action = 'add'
         }
-
-        this.#messageModifPanier = 'Ajouté au panier'
         return action
     }
 
     /**
      * @param {ItemCart} item
+     * @return {string} action réalisé
      */
     #removeItem(item){
         const index = this.#findIndex(item)
@@ -236,11 +214,10 @@ export class CartLocalStorage{
         if(index >= 0)
         {
             this.#panier.splice(index,1)
-            this.#nbArticle -= item.quantity
-
-            this.#messageModifPanier = 'Supprimé du panier'
+            return 'delete'
         }
-        this.#messageModifPanier = "Ce produit n'est pas dans le panier"
+
+        return 'not-available'
     }
 
     #updateLocalStorage(){

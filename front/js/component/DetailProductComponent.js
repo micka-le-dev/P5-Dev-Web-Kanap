@@ -1,6 +1,7 @@
 import { CartLocalStorage } from "../class/CartLocalStorage.js";
 import { createElement, replaceContentElementByMessage } from "../functions/dom.js";
 import { InputQuantityManager } from "./inputQuantityManager.js";
+import { MessageAfterActionUser } from "./MessageAfterActionUser.js"
 
 /**
  * @typedef {object} Produit
@@ -50,19 +51,31 @@ export class DetailProductComponent{
     /** @type {Function} */
     #oldCallBack
 
+    /** @type {MessageAfterActionUser} */
+    #messageToUser
 
 
     /**
      * @param {CartLocalStorage} cartLocalStorage
      * @param {string} selecteurCSS
+     * @param {MessageAfterActionUser} messageToUser
      */
-    constructor(cartLocalStorage, selecteurCSS){
+    constructor(cartLocalStorage, selecteurCSS, messageToUser){
         this.#cartLocalStorage = cartLocalStorage
         this.#contenerDetailElement = document.querySelector(selecteurCSS)
+        this.#messageToUser = messageToUser
     }
 
+    /** @return {string} */
     get idProduct() { return this.#produit._id }
+
+    /** @return {string} */
     get color() { return this.#colorsElement?.value }
+
+    /** @return {boolean} */
+    get noColorSelected() { return this.color === ''}
+
+    /** @return {number} */
     get quantity() { return this.#quantityManager?.quantity }
 
     /**
@@ -118,35 +131,46 @@ export class DetailProductComponent{
         this.#updateTextBtn(undefined)
 
         this.#colorsElement = this.#contenerDetailElement.querySelector('#colors')
-        produit.colors.forEach( color => {
-                const colorElement = createElement('option',
-                                                    {value: color },
-                                                    color
-                                                  )
-                if( color === this.#dejaDansPanier?.color){
-                    this.#colorChange(color)
-                    this.#updateTextBtn('add')
-                    colorElement.setAttribute('selected','')
-                }
-                this.#colorsElement.append(colorElement)
-            })
+        produit.colors.forEach( color => this.#initColorElement(color) )
         this.#colorsElement.addEventListener('change', event => { this.#colorChange(event.target.value) })
 
+        this.#messageToUser.update('no-message')
         return this.#contenerDetailElement
     }
 
     /**
      * @param {string} color
      */
+    #initColorElement(color){
+        const colorElement = createElement('option',
+                                            {value: color },
+                                            color
+                                            )
+        if( color === this.#dejaDansPanier?.color){
+            colorElement.setAttribute('selected','')
+            this.#quantityManager.quantity = this.#dejaDansPanier.quantity
+            this.#quantityManager.disabled = false
+            this.#updateTextBtn('add')
+        }
+        this.#colorsElement.append(colorElement)
+    }
+
+    /**
+     * @param {string} color
+     */
     #colorChange(color){
-        if ( color == '' ){
+
+        if ( this.noColorSelected ){
             this.#dejaDansPanier = undefined
             this.#updateTextBtn(undefined)
             this.#quantityManager.disabled = true
+            this.#messageToUser.update('no-color-selected')
             return
         }
+
         this.#updateTextBtn('add')
         this.#dejaDansPanier = this.#cartLocalStorage.findByIdAndColor(this.#produit._id, color)
+        this.#messageToUser.update('no-message')
         const quantity = this.#dejaDansPanier?.quantity ?? 1
         this.#quantityManager.quantity = quantity
         this.#quantityManager.disabled = false
