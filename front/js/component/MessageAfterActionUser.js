@@ -31,8 +31,8 @@ export class MessageAfterActionUser{
         this.#updateMessage(context)
 
         console.log(`MessageAfterActionUser
-message : ${this.#message}
-context : ${context}`)
+context : ${context}
+message : ${this.#message}`)
 
         if ( this.#message ){
             if( this.#messageElement )
@@ -42,8 +42,11 @@ context : ${context}`)
                 this.#contenerElement.insertAdjacentElement(this.#position, this.#messageElement)
             }
         }
-        else
+        else{
             this.#messageElement?.remove()
+            this.#messageElement = undefined
+
+        }
     }
 
     /**
