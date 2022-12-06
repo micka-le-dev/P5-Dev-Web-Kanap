@@ -1,5 +1,6 @@
 import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { DetailCartComponent } from "./component/DetailCartComponent.js"
+import { OrderFormManager } from "./component/OrderFormManager.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 
 const cartLocalStorage = new CartLocalStorage()
@@ -19,3 +20,7 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
     cartComponent.update(cartLocalStorage)
     tailleCartComponent.updateComponent()
 })
+
+
+const formOrder = document.querySelector('.cart__order__form')
+const orderFormManager = new OrderFormManager(formOrder)
