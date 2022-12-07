@@ -3,6 +3,9 @@ export class OrderFormManager{
     /** @type {HTMLFormElement} */
     #form
 
+    /** @type {FormData} */
+    #formData
+
     #regex = {
         nom: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u,
         adresse: /^[A-Za-z0-9àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{5,100}$/,
@@ -26,12 +29,71 @@ export class OrderFormManager{
         form.querySelector('#city').addEventListener('input', e => this.#verifyCity(e.target.value))
         form.querySelector('#email').addEventListener('input', e => this.#verifyEmail(e.target.value))
 
-        form.addEventListener('submit', event => this.submit(event))
+        // form.addEventListener('submit', event => this.submit(event))
     }
 
-    submit(){
 
+    /**
+     * @typedef {Object} Contact
+     * @property {string} firstName
+     * @property {string} lastName
+     * @property {string} address
+     * @property {string} city
+     * @property {string} email
+     */
+    /**
+     * @param {Event | undefined} event si event est defini et le formulaire est invalide, preventDefault et alert
+     * @returns {Contact | undefined} undefined si le formulaire n'est pas valide
+     */
+    submit(event){
+        return this.getContact(event)
     }
+
+    /**
+     * @param {Event | undefined} event si event est defini et le formulaire est invalide, preventDefault et alert
+     * @returns {Contact | undefined} undefined si le formulaire n'est pas valide
+     */
+    getContact(event){
+        if( ! this.#formData )
+            this.#formData = new FormData(this.#form)
+
+        if ( ! this.orderFormIsOk() ){
+            if(event){
+                event.preventDefault()
+                alert(`Les reseignements fournis sont incorrect.
+Veuillez fournir ces information s'il vous plait.`)
+            }
+            return
+        }
+
+        const contact = {
+            firstName: this.#formData.get('firstName'),
+            lastName: this.#formData.get('lastName'),
+            address: this.#formData.get('address'),
+            city: this.#formData.get('city'),
+            email: this.#formData.get('email')
+        }
+        console.log('getContact(), Commande Ok ! ', contact)
+        return contact
+    }
+    /**
+     * @returns {boolean}
+     */
+    orderFormIsOk(){
+        if( ! this.#formData )
+            this.#formData = new FormData(this.#form)
+
+        const firstNameIsOk = this.#firstNameIsOk( this.#formData.get('firstName') )
+        const lastNameIsOk = this.#lastNameIsOk( this.#formData.get('lastName') )
+        const addressIsOk = this.#addressIsOk( this.#formData.get('address') )
+        const cityIsOk = this.#cityIsOk( this.#formData.get('city') )
+        const emailIsOk = this.#emailIsOk( this.#formData.get('email') )
+
+        if ( firstNameIsOk && lastNameIsOk && addressIsOk && cityIsOk && emailIsOk )
+            return true
+        return false
+    }
+
 
     /**
      * @param {string} firstName

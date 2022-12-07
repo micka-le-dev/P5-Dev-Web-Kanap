@@ -6,7 +6,7 @@ export class InputQuantityManager{
     /** @type {boolean} */
     #deletable
 
-    /** @type {Function} */
+    /** @type {requestCallback} */
     #oldCallBack
 
 
@@ -21,7 +21,7 @@ export class InputQuantityManager{
     }
 
     /**
-     * @param {Function} newActionChangeValue
+     * @param {requestCallback} newActionChangeValue
      */
     actionChangeValue(newActionChangeValue) {
         this.#inputElement.removeEventListener('change', this.#oldCallBack )

@@ -24,3 +24,22 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
 
 const formOrder = document.querySelector('.cart__order__form')
 const orderFormManager = new OrderFormManager(formOrder)
+formOrder.addEventListener('submit', event => {
+    event.preventDefault() // dev
+
+    if( cartLocalStorage.isVoid ){
+        event.preventDefault()
+        return
+    }
+
+    const contact = orderFormManager.getContact(event)
+
+    if( ! contact ){
+        return
+    }
+
+    const order = {
+        contact,
+        cart: cartLocalStorage.items
+    }
+})

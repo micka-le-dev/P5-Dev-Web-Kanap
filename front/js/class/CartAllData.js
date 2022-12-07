@@ -146,7 +146,7 @@ import { CartLocalStorage } from "./CartLocalStorage.js"
     }
 
     /**
-     * @param {callback} callback
+     * @param {requestCallback} callback
      */
     forEach(callback){
         this.#cartCompete.forEach( item => callback(item))

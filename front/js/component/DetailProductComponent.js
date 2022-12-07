@@ -48,7 +48,7 @@ export class DetailProductComponent{
      */
     #actionBtnNotDefined = `classe DetailProductComponent : l'action du bouton #addToCart n'est pas défini, utiliser la méthode actionClickBtn pour la definir`
 
-    /** @type {Function} */
+    /** @type {requestCallback} */
     #oldCallBack
 
     /** @type {MessageAfterActionUser} */
@@ -79,7 +79,7 @@ export class DetailProductComponent{
     get quantity() { return this.#quantityManager?.quantity }
 
     /**
-     * @param {Function} actionBtn
+     * @param {requestCallback} actionBtn
      */
     actionClickBtn(actionBtn) {
         this.#btnActionCartElement.removeEventListener('click', this.#oldCallBack )

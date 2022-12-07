@@ -129,7 +129,7 @@ export class CartAllData{
     }
 
     /**
-     * @param {callback} callback
+     * @param {requestCallback} callback
      */
     forEach(callback){
         this.#cartCompete.forEach( item => callback(item))
