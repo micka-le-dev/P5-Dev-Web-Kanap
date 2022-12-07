@@ -51,6 +51,26 @@ export class CartLocalStorage{
 
     /** @return {ItemCart[]} */
     get items() { return this.#panier }
+
+
+    /**
+     * @typedef {Object} ProductCart
+     * @property {string} _id
+     * @property {string} color
+     * @property {number} quantity
+     */
+    /** @return {ProductCart[]} */
+    get products(){
+        const products = []
+        this.#panier.forEach(item => {
+            products.push({
+                _id: item.idProduct,
+                color,
+                quantity
+            })
+        })
+        return products
+    }
     /** @return {boolean} */
     get isVoid() {  return ! this.#panier || this.#panier.length <= 0 }
 

@@ -40,6 +40,6 @@ formOrder.addEventListener('submit', event => {
 
     const order = {
         contact,
-        cart: cartLocalStorage.items
+        cart: cartLocalStorage.products
     }
 })
