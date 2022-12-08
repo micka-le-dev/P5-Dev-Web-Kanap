@@ -76,6 +76,11 @@ Veuillez fournir ces information s'il vous plait.`)
         console.log('getContact(), Commande Ok ! ', contact)
         return contact
     }
+
+    reset(){
+        this.#form.reset()
+    }
+
     /**
      * @returns {boolean}
      */

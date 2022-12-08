@@ -272,4 +272,11 @@ export class CartLocalStorage{
         this.#nbArticle = 0
         this.#panier.forEach(item => this.#nbArticle += item.quantity )
     }
+
+    empty(){
+        this.console()
+        this.#panier = []
+        localStorage.removeItem(this.#keyLocalStorage)
+        this.console()
+    }
 }

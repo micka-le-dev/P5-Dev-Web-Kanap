@@ -3,6 +3,7 @@ import { DetailCartComponent } from "./component/DetailCartComponent.js"
 import { OrderFormManager } from "./component/OrderFormManager.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 import { fetchPostJson } from "./functions/fetch.js"
+import { isString } from "./functions/utils.js"
 import { urlApi } from "./var.js"
 
 const cartLocalStorage = new CartLocalStorage()
@@ -27,7 +28,7 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
 const formOrder = document.querySelector('.cart__order__form')
 const orderFormManager = new OrderFormManager(formOrder)
 formOrder.addEventListener('submit', async (event) => {
-    event.preventDefault() // dev
+   //event.preventDefault() // dev
 
     if( cartLocalStorage.isVoid ){
         event.preventDefault()
@@ -49,9 +50,19 @@ formOrder.addEventListener('submit', async (event) => {
     try{
         console.log('order ',order)
 
-        const numOrder = await fetchPostJson(`${urlApi}/order`, order).orderId
+        const recutDuServeur = await fetchPostJson(`${urlApi}/order`, order)
 
-        console.log('numOrder ',numOrder)
+        console.log('recutDuServeur ',recutDuServeur)
+
+        const orderId = recutDuServeur.orderId
+        console.log('orderId ',orderId)
+
+        if( ! orderId )
+            throw new Error('orderId est n\'est pas défini')
+
+        sessionStorage.setItem('orderId',orderId)
+        orderFormManager.reset()
+        cartLocalStorage.empty()
     }
     catch(err){
         event.preventDefault()
