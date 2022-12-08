@@ -64,9 +64,9 @@ export class CartLocalStorage{
         const products = []
         this.#panier.forEach(item => {
             products.push({
-                _id: item.idProduct,
-                color,
-                quantity
+                id: item.idProduct,
+                color: item.color,
+                quantity: item.quantity
             })
         })
         return products

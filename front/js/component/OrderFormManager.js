@@ -100,7 +100,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean | undefined} retourne undefined si firstName est null, undefined ou vide
      */
     #firstNameIsOk(firstName){
-        console.log("firstNameIsOk avec ",firstName)
         if( firstName == undefined || firstName == null || firstName === '')
             return undefined
         else if( this.regex.nom.test(firstName) )
@@ -112,7 +111,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @param {string} firstName
      */
     #verifyFirstName(firstName){
-        console.log("verifyFirstName avec ",firstName)
         const errorElement = this.#form.querySelector('#firstNameErrorMsg')
 
         switch(this.#firstNameIsOk(firstName)){
@@ -134,7 +132,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean | undefined} retourne undefined si lastName est null, undefined ou vide
      */
     #lastNameIsOk(lastName){
-        console.log("lastNameIsOk avec ",lastName)
         if( lastName == undefined || lastName == null || lastName === '')
             return undefined
         else if( this.regex.nom.test(lastName) )
@@ -146,7 +143,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @param {string} lastName
      */
     #verifyLastName(lastName){
-        console.log("verifyLastName avec ",lastName)
         const errorElement = this.#form.querySelector('#lastNameErrorMsg')
 
         switch(this.#lastNameIsOk(lastName)){
@@ -168,7 +164,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean | undefined} retourne undefined si address est null, undefined ou vide
      */
      #addressIsOk(address){
-        console.log("addressIsOk avec ",address)
         if( address == undefined || address == null || address === '')
             return undefined
         else if( this.regex.adresse.test(address) )
@@ -180,7 +175,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @param {string} address
      */
     #verifyAddress(address){
-        console.log("verifyAddress avec ",address)
         const errorElement = this.#form.querySelector('#addressErrorMsg')
 
         switch(this.#addressIsOk(address)){
@@ -202,7 +196,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean | undefined} retourne undefined si city est null, undefined ou vide
      */
      #cityIsOk(city){
-        console.log("cityIsOk avec ",city)
         if( city == undefined || city == null || city === '')
             return undefined
         else if( this.regex.nom.test(city) )
@@ -214,7 +207,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @param {string} city
      */
     #verifyCity(city){
-        console.log("verifyCity avec ",city)
         const errorElement = this.#form.querySelector('#cityErrorMsg')
 
         switch(this.#cityIsOk(city)){
@@ -237,7 +229,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean | undefined} retourne undefined si email est null, undefined ou vide
      */
      #emailIsOk(email){
-        console.log("emailIsOk avec ",email)
         if( email == undefined || email == null || email === '')
             return undefined
         else if( this.regex.email.test(email) )
@@ -249,7 +240,6 @@ Veuillez fournir ces information s'il vous plait.`)
      * @param {string} email
      */
     #verifyEmail(email){
-        console.log("emailIsOk avec ",email)
         const errorElement = this.#form.querySelector('#emailErrorMsg')
 
         switch(this.#emailIsOk(email)){

@@ -2,6 +2,8 @@ import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { DetailCartComponent } from "./component/DetailCartComponent.js"
 import { OrderFormManager } from "./component/OrderFormManager.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
+import { fetchPostJson } from "./functions/fetch.js"
+import { urlApi } from "./var.js"
 
 const cartLocalStorage = new CartLocalStorage()
 const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
@@ -24,7 +26,7 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
 
 const formOrder = document.querySelector('.cart__order__form')
 const orderFormManager = new OrderFormManager(formOrder)
-formOrder.addEventListener('submit', event => {
+formOrder.addEventListener('submit', async (event) => {
     event.preventDefault() // dev
 
     if( cartLocalStorage.isVoid ){
@@ -35,11 +37,24 @@ formOrder.addEventListener('submit', event => {
     const contact = orderFormManager.getContact(event)
 
     if( ! contact ){
+        event.preventDefault()
         return
     }
 
     const order = {
         contact,
-        cart: cartLocalStorage.products
+        products: cartLocalStorage.products
+    }
+
+    try{
+        console.log('order ',order)
+
+        const numOrder = await fetchPostJson(`${urlApi}/order`, order)
+
+        console.log('numOrder ',numOrder)
+    }
+    catch(err){
+        event.preventDefault()
+        console.error(err)
     }
 })
