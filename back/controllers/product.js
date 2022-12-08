@@ -59,10 +59,8 @@ exports.orderProducts = (req, res, next) => {
   let queries = [];
   for (let productId of req.body.products._id) {
     const queryPromise = new Promise((resolve, reject) => {
-      console.log('orderProducts : ',productId)
       Product.findById(productId).then(
         (product) => {
-          console.log('requête order : produit : ', product)
           if (!product) {
             reject('Product not found: ' + productId);
           }
