@@ -49,7 +49,7 @@ formOrder.addEventListener('submit', async (event) => {
     try{
         console.log('order ',order)
 
-        const numOrder = await fetchPostJson(`${urlApi}/order`, order)
+        const numOrder = await fetchPostJson(`${urlApi}/order`, order).orderId
 
         console.log('numOrder ',numOrder)
     }
