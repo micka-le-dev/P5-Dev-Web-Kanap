@@ -7,6 +7,9 @@ import { isString } from "./functions/utils.js"
 import { urlApi } from "./var.js"
 
 const cartLocalStorage = new CartLocalStorage()
+if( ! cartLocalStorage.isVoid )
+    sessionStorage.removeItem('orderId')
+
 const tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStorage)
 
 const templateItemCart = document.querySelector('template#itemCart')
@@ -28,7 +31,6 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
 const formOrder = document.querySelector('.cart__order__form')
 const orderFormManager = new OrderFormManager(formOrder)
 formOrder.addEventListener('submit', async (event) => {
-   //event.preventDefault() // dev
 
     if( cartLocalStorage.isVoid ){
         event.preventDefault()

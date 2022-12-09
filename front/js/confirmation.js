@@ -4,3 +4,6 @@ if ( orderId ){
 
     document.querySelector('#orderId').innerText = orderId
 }
+else{
+        document.querySelector('.confirmation').innerText = `Désolé, nous n'avons aucun numéro de commande à vous fournir.`
+}
