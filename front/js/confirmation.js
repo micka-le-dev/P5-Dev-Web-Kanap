@@ -1,3 +1,7 @@
+import { TailleCartComponent } from "./component/TailleCartComponent.js"
+
+const tailleCartComponent = new TailleCartComponent('#js-statusCart')
+
 const orderId = sessionStorage.getItem('orderId')
 if ( orderId ){
     console.log('orderId', orderId)
