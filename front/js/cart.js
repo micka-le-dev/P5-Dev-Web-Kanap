@@ -65,6 +65,7 @@ formOrder.addEventListener('submit', async (event) => {
         sessionStorage.setItem('orderId',orderId)
         orderFormManager.reset()
         cartLocalStorage.empty()
+        tailleCartComponent.updateComponent()
     }
     catch(err){
         event.preventDefault()
