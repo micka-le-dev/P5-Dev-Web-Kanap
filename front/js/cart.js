@@ -3,7 +3,7 @@ import { DetailCartComponent } from "./component/DetailCartComponent.js"
 import { OrderFormManager } from "./component/OrderFormManager.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
 import { fetchPostJson } from "./functions/fetch.js"
-import { isString } from "./functions/utils.js"
+import { redirectToRelativePage } from "./functions/pathName.js"
 import { urlApi } from "./var.js"
 
 const cartLocalStorage = new CartLocalStorage()
@@ -31,16 +31,17 @@ cartAndOrderElement.addEventListener('updateItemCart', event => {
 const formOrder = document.querySelector('.cart__order__form')
 const orderFormManager = new OrderFormManager(formOrder)
 formOrder.addEventListener('submit', async (event) => {
+    event.preventDefault()
 
     if( cartLocalStorage.isVoid ){
-        event.preventDefault()
+        // event.preventDefault()
         return
     }
 
-    const contact = orderFormManager.getContact(event)
+    const contact = orderFormManager.getContact()
 
     if( ! contact ){
-        event.preventDefault()
+        // event.preventDefault()
         return
     }
 
@@ -63,9 +64,12 @@ formOrder.addEventListener('submit', async (event) => {
             throw new Error('orderId est n\'est pas défini')
 
         sessionStorage.setItem('orderId',orderId)
+
         orderFormManager.reset()
         cartLocalStorage.empty()
         tailleCartComponent.updateComponent()
+
+        redirectToRelativePage(orderFormManager.pathAction)
     }
     catch(err){
         event.preventDefault()

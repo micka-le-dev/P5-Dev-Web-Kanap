@@ -32,6 +32,8 @@ export class OrderFormManager{
         // form.addEventListener('submit', event => this.submit(event))
     }
 
+    /** @return {string | null} */
+    get pathAction() {  return this.#form.getAttribute('action')  }
 
     /**
      * @typedef {Object} Contact
