@@ -2,6 +2,7 @@ import { CartLocalStorage } from "./class/CartLocalStorage.js"
 import { DetailCartComponent } from "./component/DetailCartComponent.js"
 import { OrderFormManager } from "./component/OrderFormManager.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
+import { replaceContentElementByMessage } from "./functions/dom.js"
 import { fetchPostJson } from "./functions/fetch.js"
 import { redirectToRelativePage } from "./functions/pathName.js"
 import { urlApi } from "./var.js"
@@ -74,5 +75,6 @@ formOrder.addEventListener('submit', async (event) => {
     catch(err){
         event.preventDefault()
         console.error(err)
+        replaceContentElementByMessage(cartAndOrderElement, "Désolé, une erreur s'est produite lors de l'envoi de l'ordre de commande.")
     }
 })
