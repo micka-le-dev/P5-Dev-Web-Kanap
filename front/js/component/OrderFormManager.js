@@ -87,8 +87,7 @@ Veuillez fournir ces information s'il vous plait.`)
      * @returns {boolean}
      */
     orderFormIsOk(){
-        if( ! this.#formData )
-            this.#formData = new FormData(this.#form)
+        this.#formData = new FormData(this.#form)
 
         const firstNameIsOk = this.#firstNameIsOk( this.#formData.get('firstName') )
         const lastNameIsOk = this.#lastNameIsOk( this.#formData.get('lastName') )

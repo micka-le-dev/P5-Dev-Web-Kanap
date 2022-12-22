@@ -84,7 +84,7 @@ export class InputQuantityManager{
         else{
             oldValue = this.#inputElement.getAttribute('data-old-value')
             initValue = oldValue == undefined || oldValue === ''
-            oldValue = initValue ? 1 : oldValue * 1
+            oldValue = initValue ? 1 : oldValue * 1 // initialise la quantité à 1 sauf si l'attribut data-old-value a une valeur
             quantity = this.quantity
             if(
                 quantity != undefined
