@@ -56,15 +56,15 @@ export class OrderFormManager{
      * @returns {Contact | undefined} undefined si le formulaire n'est pas valide
      */
     getContact(event){
-        if( ! this.#formData )
-            this.#formData = new FormData(this.#form)
+        this.#formData = new FormData(this.#form)
 
         if ( ! this.orderFormIsOk() ){
             if(event){
                 event.preventDefault()
-                alert(`Les reseignements fournis sont incorrect.
-Veuillez fournir ces information s'il vous plait.`)
             }
+            console.log('getContact(), Commande not Ok ! ')
+            alert(`Les reseignements fournis sont incorrect.
+Veuillez fournir ces information s'il vous plait.`)
             return
         }
 
