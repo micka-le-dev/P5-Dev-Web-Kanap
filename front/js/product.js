@@ -13,12 +13,6 @@ var tailleCartComponent = new TailleCartComponent('#js-statusCart',cartLocalStor
 var messageToUser = new MessageAfterActionUser(document.querySelector('.item__content__addButton'), 'afterend')
 var detailProductComponent = new DetailProductComponent(cartLocalStorage, 'section.item > article', messageToUser)
 
-document.querySelector('#colors').addEventListener('colorChange', event => {
-    if ( event.detail.colorIsValid )
-        messageToUser.update('no-message')
-    else
-        messageToUser.update('no-color-selected')
-})
 
 try{
 
@@ -33,11 +27,6 @@ try{
     detailProductComponent.initDetailProduct(produit)
 
 
-    /**
-     * @param {string} idProduct
-     * @param {string} color
-     * @param {number} quantity
-     */
     detailProductComponent.actionClickBtn( userModifyCart )
 
 }catch(err){
