@@ -1,4 +1,4 @@
-import { CartLocalStorage } from "../class/CartLocalStorage.js"
+import { CartLocalStorage } from "../Cart/CartLocalStorage.js"
 import { ErrorSelectorCSS } from "../Error/ErrorSelectorCSS.js"
 
 export class TailleCartComponent{

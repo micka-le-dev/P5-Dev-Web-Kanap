@@ -1,4 +1,4 @@
-import { CartLocalStorage } from "../class/CartLocalStorage.js";
+import { CartLocalStorage } from "../Cart/CartLocalStorage.js";
 import { createElement, replaceContentElementByMessage } from "../functions/dom.js";
 import { InputQuantityManager } from "./inputQuantityManager.js";
 import { MessageAfterActionUser } from "./MessageAfterActionUser.js"

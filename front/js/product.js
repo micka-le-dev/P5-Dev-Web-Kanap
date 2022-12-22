@@ -1,4 +1,4 @@
-import { CartLocalStorage } from "./class/CartLocalStorage.js"
+import { CartLocalStorage } from "./Cart/CartLocalStorage.js"
 import { DetailProductComponent } from "./component/DetailProductComponent.js"
 import { MessageAfterActionUser } from "./component/MessageAfterActionUser.js"
 import { TailleCartComponent } from "./component/TailleCartComponent.js"
