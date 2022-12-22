@@ -66,15 +66,17 @@ formOrder.addEventListener('submit', async (event) => {
 
         sessionStorage.setItem('orderId',orderId)
 
-        orderFormManager.reset()
         cartLocalStorage.empty()
-        tailleCartComponent.updateComponent()
 
         redirectToRelativePage(orderFormManager.pathAction)
     }
     catch(err){
         event.preventDefault()
         console.error(err)
+
+        tailleCartComponent.updateComponent()
+        orderFormManager.reset()
+
         replaceContentElementByMessage(cartAndOrderElement, "Désolé, une erreur s'est produite lors de l'envoi de l'ordre de commande.")
     }
 })
