@@ -16,4 +16,4 @@ console when the server starts, e.g. `Listening on port 3001`.
 
 ### Open in Browser ###
 
-Because of a `CORP error`, javascript can't be loaded locally. On `VScode`, you can use `Live Server` to fix it
+Because of a `CORP error`, javascript can't be loaded locally. On `VScode`, you can use `Live Server` extension to fix it.
