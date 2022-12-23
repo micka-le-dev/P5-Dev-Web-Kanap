@@ -56,8 +56,6 @@ formOrder.addEventListener('submit', async (event) => {
 
         const recutDuServeur = await fetchPostJson(`${urlApi}/order`, order)
 
-        console.log('recutDuServeur ',recutDuServeur)
-
         const orderId = recutDuServeur.orderId
         console.log('orderId ',orderId)
 
