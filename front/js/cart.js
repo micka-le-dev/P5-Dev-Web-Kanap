@@ -48,7 +48,7 @@ formOrder.addEventListener('submit', async (event) => {
 
     const order = {
         contact,
-        products: cartLocalStorage.ids
+        products: cartLocalStorage.ids // remplacer ids par detailsCart losque l'API sera cohérante avec le besion du client Kanap
     }
 
     try{
