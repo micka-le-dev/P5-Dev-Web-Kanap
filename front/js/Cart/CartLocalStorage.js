@@ -60,7 +60,7 @@ export class CartLocalStorage{
      * @property {number} quantity
      */
     /** @return {ProductCart[]} */
-    get products(){
+    get detailsCart(){
         const products = []
         this.#panier.forEach(item => {
             products.push({
@@ -70,6 +70,15 @@ export class CartLocalStorage{
             })
         })
         return products
+    }
+
+    /** @return {string[]} la liste des id des produit dans le panier */
+    get ids(){
+        const ids = []
+        this.#panier.forEach(item => {
+            ids.push(item.idProduct)
+        })
+        return ids
     }
     /** @return {boolean} */
     get isVoid() {  return ! this.#panier || this.#panier.length <= 0 }

@@ -48,7 +48,7 @@ formOrder.addEventListener('submit', async (event) => {
 
     const order = {
         contact,
-        products: cartLocalStorage.products
+        products: cartLocalStorage.ids
     }
 
     try{
