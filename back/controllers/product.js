@@ -57,12 +57,12 @@ exports.orderProducts = (req, res, next) => {
     return res.status(400).send(new Error('Bad request!'));
   }
   let queries = [];
-  for (let productToVerify of req.body.products) {
+  for (let productId of req.body.products) {
     const queryPromise = new Promise((resolve, reject) => {
-      Product.findById(productToVerify._id).then(
+      Product.findById(productId).then(
         (product) => {
           if (!product) {
-            reject('Product not found: ' + productToVerify._id);
+            reject('Product not found: ' + productId);
           }
           product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
           resolve(product);
